@@ -14,12 +14,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DisplayName("CsvQuestionDaoTest")
 public class CsvQuestionDaoTest {
 
-    ApplicationContext context;
     private CsvQuestionDao csvQuestionDao;
 
     @BeforeEach
     public void setUp() {
-        context = new ClassPathXmlApplicationContext("/spring-context.xml");
+        ApplicationContext context = new ClassPathXmlApplicationContext("/spring-context.xml");
         csvQuestionDao = context.getBean(CsvQuestionDao.class);
     }
 
