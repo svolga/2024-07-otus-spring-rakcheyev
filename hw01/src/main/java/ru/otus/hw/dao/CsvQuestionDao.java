@@ -7,11 +7,12 @@ import ru.otus.hw.dao.dto.QuestionDto;
 import ru.otus.hw.domain.Question;
 import ru.otus.hw.exceptions.QuestionReadException;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -25,19 +26,17 @@ public class CsvQuestionDao implements QuestionDao {
 
     @Override
     public List<Question> findAll() {
-        // Использовать CsvToBean
-        // https://opencsv.sourceforge.net/#collection_based_bean_fields_one_to_many_mappings
-        // Использовать QuestionReadException
-        // Про ресурсы: https://mkyong.com/java/java-read-a-file-from-resources-folder/
 
         List<QuestionDto> questionDtos;
         String filename = fileNameProvider.getTestFileName();
 
-        try {
-            FileReader fileReader = new FileReader(getFileFromResource(filename));
-            questionDtos = getQuestionDtos(fileReader);
-        } catch (QuestionReadException | FileNotFoundException e) {
-            throw new QuestionReadException(e.getMessage());
+        try (InputStream inputStream = getFileFromResourceAsStream(filename);
+             InputStreamReader streamReader =
+                     new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+             BufferedReader reader = new BufferedReader(streamReader)) {
+            questionDtos = getQuestionDtos(reader);
+        } catch (IllegalArgumentException | IOException e) {
+            throw new QuestionReadException(e.getMessage(), e);
         }
 
         return convertQuestionDtoToQuestion(questionDtos);
@@ -49,7 +48,7 @@ public class CsvQuestionDao implements QuestionDao {
                 .toList();
     }
 
-    private List<QuestionDto> getQuestionDtos(FileReader fileReader) {
+    private List<QuestionDto> getQuestionDtos(Reader fileReader) {
         return new CsvToBeanBuilder<QuestionDto>(fileReader)
                 .withProfile("questions")
                 .withSeparator(DELIMETER_QUESTION_TO_ANSWERS)
@@ -59,18 +58,14 @@ public class CsvQuestionDao implements QuestionDao {
                 .parse();
     }
 
-    private File getFileFromResource(String fileName) {
+    private InputStream getFileFromResourceAsStream(String fileName) {
         ClassLoader classLoader = getClass().getClassLoader();
-        URL resource = classLoader.getResource(fileName);
+        InputStream inputStream = classLoader.getResourceAsStream(fileName);
 
-        if (resource == null) {
+        if (inputStream == null) {
             throw new IllegalArgumentException("file not found! " + fileName);
         } else {
-            try {
-                return new File(resource.toURI());
-            } catch (URISyntaxException e) {
-                throw new RuntimeException(e);
-            }
+            return inputStream;
         }
     }
 
