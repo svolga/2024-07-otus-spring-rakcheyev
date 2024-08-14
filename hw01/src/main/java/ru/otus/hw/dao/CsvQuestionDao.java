@@ -21,6 +21,7 @@ public class CsvQuestionDao implements QuestionDao {
     private static final char DELIMETER_QUESTION_TO_ANSWERS = ';';
 
     private static final int START_LINE = 1;
+    private static final String ERROR_FILE_READING = "Ошибка чтения файла";
 
     private final TestFileNameProvider fileNameProvider;
 
@@ -36,7 +37,7 @@ public class CsvQuestionDao implements QuestionDao {
              BufferedReader reader = new BufferedReader(streamReader)) {
             questionDtos = getQuestionDtos(reader);
         } catch (IllegalArgumentException | IOException e) {
-            throw new QuestionReadException(e.getMessage(), e);
+            throw new QuestionReadException(ERROR_FILE_READING, e);
         }
 
         return convertQuestionDtoToQuestion(questionDtos);
@@ -50,7 +51,6 @@ public class CsvQuestionDao implements QuestionDao {
 
     private List<QuestionDto> getQuestionDtos(Reader fileReader) {
         return new CsvToBeanBuilder<QuestionDto>(fileReader)
-                .withProfile("questions")
                 .withSeparator(DELIMETER_QUESTION_TO_ANSWERS)
                 .withType(QuestionDto.class)
                 .withSkipLines(START_LINE)
