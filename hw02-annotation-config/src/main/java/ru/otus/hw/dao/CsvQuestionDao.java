@@ -33,14 +33,13 @@ public class CsvQuestionDao implements QuestionDao {
     @Override
     public List<Question> findAll() {
 
-        List<QuestionDto> questionDtos;
         String filename = fileNameProvider.getTestFileName();
 
         try (InputStream inputStream = getFileFromResourceAsStream(filename);
              InputStreamReader streamReader =
                      new InputStreamReader(inputStream, StandardCharsets.UTF_8);
              BufferedReader reader = new BufferedReader(streamReader)) {
-            questionDtos = getQuestionDtos(reader);
+            List<QuestionDto> questionDtos = getQuestionDtos(reader);
             return convertQuestionDtoToQuestion(questionDtos);
         } catch (Exception e) {
             throw new QuestionReadException(ERROR_FILE_READING, e);
