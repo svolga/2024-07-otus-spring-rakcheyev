@@ -8,7 +8,7 @@ import ru.otus.hw.domain.Question;
 import ru.otus.hw.domain.Student;
 import ru.otus.hw.domain.TestResult;
 
-import java.util.Objects;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -31,15 +31,20 @@ public class TestServiceImpl implements TestService {
         ioService.printLine("");
         ioService.printFormattedLine(TEXT_ANSWER_QUESTION);
         var questions = questionDao.findAll();
+        return readPrompt(questions, student);
+    }
+
+    private TestResult readPrompt(List<Question> questions, Student student) {
         var testResult = new TestResult(student);
 
         for (int i = 0; i < questions.size(); i++) {
             Question question = questions.get(i);
 
+            var questionWithAnswers = getQuestionWithAnswers(question, i + 1);
             var answerIndex = ioService.readIntForRangeWithPrompt(
                     1,
                     question.answers().size(),
-                    getQuestionWithAnswers(question, i + 1),
+                    questionWithAnswers,
                     TEXT_ENTER_NUMBERS_FROM + question.answers().size()
             );
 
@@ -53,25 +58,13 @@ public class TestServiceImpl implements TestService {
 
     private String getQuestionWithAnswers(Question question, int questionNumber) {
 
-        if (question == null || question.text().isBlank()) {
-            return null;
-        }
-
         String header = String.format("--> %d. %s %s", questionNumber, question.text(), System.lineSeparator());
-        if (question.answers() == null || question.answers().isEmpty()) {
-            return header;
-        }
 
         return IntStream.range(0, question.answers().size())
                 .mapToObj(index -> {
                     Answer answer = question.answers().get(index);
-                    if (answer.text() != null && !answer.text().isBlank()) {
-                        return String.format("%d. %s", index + 1, answer.text());
-                    } else {
-                        return null;
-                    }
+                    return String.format("%d. %s", index + 1, answer.text());
                 })
-                .filter(Objects::nonNull)
                 .collect(Collectors.joining(System.lineSeparator(), header, System.lineSeparator()))
                 .concat(TEXT_YOUR_ANSWER);
     }
