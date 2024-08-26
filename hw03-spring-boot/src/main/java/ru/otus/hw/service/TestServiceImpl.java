@@ -17,6 +17,7 @@ import java.util.stream.IntStream;
 public class TestServiceImpl implements TestService {
 
     private static final String TEXT_ENTER_NUMBERS_FROM = "Enter numbers from 1 to ";
+
     private static final String TEXT_YOUR_ANSWER = "Your answer: ";
 
     private final LocalizedIOService ioService;
