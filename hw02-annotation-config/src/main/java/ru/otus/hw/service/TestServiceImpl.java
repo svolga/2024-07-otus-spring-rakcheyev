@@ -31,16 +31,16 @@ public class TestServiceImpl implements TestService {
         ioService.printLine("");
         ioService.printFormattedLine(TEXT_ANSWER_QUESTION);
         var questions = questionDao.findAll();
-        return readPrompt(questions, student);
+        return askQuestions(questions, student);
     }
 
-    private TestResult readPrompt(List<Question> questions, Student student) {
+    private TestResult askQuestions(List<Question> questions, Student student) {
         var testResult = new TestResult(student);
 
         for (int i = 0; i < questions.size(); i++) {
             Question question = questions.get(i);
 
-            var questionWithAnswers = getQuestionWithAnswers(question, i + 1);
+            var questionWithAnswers = convertQuestionToString(question, i + 1);
             var answerIndex = ioService.readIntForRangeWithPrompt(
                     1,
                     question.answers().size(),
@@ -56,7 +56,7 @@ public class TestServiceImpl implements TestService {
         return testResult;
     }
 
-    private String getQuestionWithAnswers(Question question, int questionNumber) {
+    private String convertQuestionToString(Question question, int questionNumber) {
 
         String header = String.format("--> %d. %s %s", questionNumber, question.text(), System.lineSeparator());
 
