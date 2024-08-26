@@ -15,7 +15,7 @@ public class AppRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("runnnnnnnnnnnnnnnnnnnnnnn");
+        System.out.println("run......");
         testRunnerService.run();
     }
 }
