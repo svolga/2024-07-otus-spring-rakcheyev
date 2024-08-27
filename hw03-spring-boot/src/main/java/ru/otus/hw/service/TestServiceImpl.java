@@ -18,8 +18,6 @@ public class TestServiceImpl implements TestService {
 
     private static final String TEXT_ENTER_NUMBERS_FROM = "Enter numbers from 1 to ";
 
-    private static final String TEXT_YOUR_ANSWER = "Your answer: ";
-
     private final LocalizedIOService ioService;
 
     private final QuestionDao questionDao;
@@ -31,21 +29,21 @@ public class TestServiceImpl implements TestService {
         ioService.printLine("");
 
         var questions = questionDao.findAll();
-        return readPrompt(questions, student);
+        return askQuestions(questions, student);
     }
 
-    private TestResult readPrompt(List<Question> questions, Student student) {
+    private TestResult askQuestions(List<Question> questions, Student student) {
         var testResult = new TestResult(student);
 
         for (int i = 0; i < questions.size(); i++) {
             Question question = questions.get(i);
 
-            var questionWithAnswers = getQuestionWithAnswers(question, i + 1);
+            var questionWithAnswers = convertQuestionToString(question, i + 1);
             var answerIndex = ioService.readIntForRangeWithPrompt(
                     1,
                     question.answers().size(),
                     questionWithAnswers,
-                    TEXT_ENTER_NUMBERS_FROM + question.answers().size()
+                    ioService.getMessage("TestService.enter.nums.from") + question.answers().size()
             );
 
             Answer userAnswer = question.answers().get(answerIndex - 1);
@@ -56,7 +54,7 @@ public class TestServiceImpl implements TestService {
         return testResult;
     }
 
-    private String getQuestionWithAnswers(Question question, int questionNumber) {
+    private String convertQuestionToString(Question question, int questionNumber) {
 
         String header = String.format("--> %d. %s %s", questionNumber, question.text(), System.lineSeparator());
 
@@ -65,8 +63,6 @@ public class TestServiceImpl implements TestService {
                     Answer answer = question.answers().get(index);
                     return String.format("%d. %s", index + 1, answer.text());
                 })
-                .collect(Collectors.joining(System.lineSeparator(), header, System.lineSeparator()))
-                .concat(TEXT_YOUR_ANSWER);
+                .collect(Collectors.joining(System.lineSeparator(), header, System.lineSeparator()));
     }
-
 }
