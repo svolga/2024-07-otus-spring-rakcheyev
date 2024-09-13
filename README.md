@@ -17,3 +17,6 @@ svolga@rambler.ru
 
 # hw03
 Перенести приложение для тестирования студентов на Spring Boot
+
+# hw04
+Использовать Spring Shell
