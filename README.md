@@ -17,3 +17,6 @@ svolga@rambler.ru
 
 # hw03
 Перенести приложение для тестирования студентов на Spring Boot
+
+# hw05
+Использовать возможности Spring JDBC и spring-boot-starter-jdbc для подключения к реляционным базам данных
