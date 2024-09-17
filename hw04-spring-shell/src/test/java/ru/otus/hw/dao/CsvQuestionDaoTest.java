@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ActiveProfiles;
 import ru.otus.hw.config.AppProperties;
 import ru.otus.hw.domain.Question;
 import ru.otus.hw.exceptions.QuestionReadException;
@@ -18,7 +17,6 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @DisplayName("Тест CsvQuestionDao")
-@ActiveProfiles("test")
 public class CsvQuestionDaoTest {
 
     @MockBean
