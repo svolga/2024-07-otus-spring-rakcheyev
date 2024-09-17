@@ -1,0 +1,6 @@
+# Добавить сюда своих вопросов. Эту строку надо пропустить при настройке CsvToBean (withSkipLines)
+Какой синтаксис является корректным для вывода "Hello World" в Java?;Console.WriteLine("Hello World")\;%false|System.out.println("Hello World")\;%true|print ("Hello World")\;%false| echo("Hello World")\;%false
+Java - это краткое название для "JavaScript".;False%true|True%false
+Какой тип данных используется для хранения строк?;myString%false|String%true|Txt%false|string%false
+Какой оператор используется для сложения двух переменных?;The + sign%true|The & sign%false|The * sign%false
+Какой оператор используется для сравнения двух значений?;==%true|=%false|<>%false|><%false
