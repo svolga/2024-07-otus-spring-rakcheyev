@@ -20,3 +20,6 @@ svolga@rambler.ru
 
 # hw04
 Использовать Spring Shell
+
+# hw05
+Использовать возможности Spring JDBC и spring-boot-starter-jdbc для подключения к реляционным базам данных
