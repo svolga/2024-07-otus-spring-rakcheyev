@@ -41,10 +41,6 @@ public class CommentRepositoryJpaTest {
     @Autowired
     private TestEntityManager em;
 
-    private List<Comment> comments;
-
-    private Book book1;
-    private Book book2;
     private List<Comment> commentsBook1;
     private List<Comment> commentsBook2;
 
@@ -56,8 +52,8 @@ public class CommentRepositoryJpaTest {
 
     @BeforeEach
     void setUp() {
-        book1 = getBookById(FIRST_BOOK_ID);
-        book2 = getBookById(SECOND_BOOK_ID);
+        Book book1 = getBookById(FIRST_BOOK_ID);
+        Book book2 = getBookById(SECOND_BOOK_ID);
         commentsBook1 = getCommentsBook1();
         commentsBook2 = getCommentsBook2();
 
