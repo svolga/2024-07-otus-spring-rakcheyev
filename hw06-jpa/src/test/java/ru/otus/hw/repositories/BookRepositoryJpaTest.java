@@ -70,6 +70,7 @@ public class BookRepositoryJpaTest {
     void shouldFindAllBooks() {
         var books = bookRepository.findAll();
         assertThat(books).hasSize(EXPECTED_NUMBER_OF_BOOKS);
+        assertThat(books.get(0).getTitle()).isEqualTo(FIRST_BOOK_TITLE);
     }
 
     @DisplayName("должен загружать список всех книг с полной информацией о них")
@@ -78,8 +79,7 @@ public class BookRepositoryJpaTest {
         SessionFactory sessionFactory = em.getEntityManager().getEntityManagerFactory()
                 .unwrap(SessionFactory.class);
         sessionFactory.getStatistics().setStatisticsEnabled(true);
-
-
+        
         System.out.println("\n\n\n\n----------------------------------------------------------------------------------------------------------");
         val books = bookRepository.findAll();
         assertThat(books).isNotNull().hasSize(EXPECTED_NUMBER_OF_BOOKS)
