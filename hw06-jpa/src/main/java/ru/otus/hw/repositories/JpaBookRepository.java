@@ -23,7 +23,10 @@ public class JpaBookRepository implements BookRepository {
 
     @Override
     public Optional<Book> findById(long id) {
-        return Optional.ofNullable(em.find(Book.class, id));
+        return em.createQuery("select b from Book b where b.id = :id", Book.class)
+                .setParameter("id", id)
+                .setHint(FETCH.getKey(), em.getEntityGraph("otus-student-author-genres-entity-graph"))
+                .getResultList().stream().findFirst();
     }
 
     @Override
