@@ -73,7 +73,7 @@ public class BookRepositoryJpaTest {
         assertThat(books.get(0).getTitle()).isEqualTo(FIRST_BOOK_TITLE);
     }
 
-    @DisplayName("должен загружать список всех книг с полной информацией о них")
+    @DisplayName("загружать список всех книг с полной информацией о них")
     @Test
     void shouldReturnCorrectBooksListWithAllInfo() {
         SessionFactory sessionFactory = em.getEntityManager().getEntityManagerFactory()
@@ -90,7 +90,7 @@ public class BookRepositoryJpaTest {
         assertThat(sessionFactory.getStatistics().getPrepareStatementCount()).isEqualTo(EXPECTED_QUERIES_COUNT);
     }
 
-    @DisplayName("должен сохранять новую книгу")
+    @DisplayName("сохранять новую книгу")
     @Test
     void shouldSaveNewBook() {
         var expectedBook = createdBook;
