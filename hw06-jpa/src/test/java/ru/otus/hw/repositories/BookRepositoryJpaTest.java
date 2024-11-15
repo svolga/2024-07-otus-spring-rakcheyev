@@ -79,7 +79,7 @@ public class BookRepositoryJpaTest {
         SessionFactory sessionFactory = em.getEntityManager().getEntityManagerFactory()
                 .unwrap(SessionFactory.class);
         sessionFactory.getStatistics().setStatisticsEnabled(true);
-        
+
         System.out.println("\n\n\n\n----------------------------------------------------------------------------------------------------------");
         val books = bookRepository.findAll();
         assertThat(books).isNotNull().hasSize(EXPECTED_NUMBER_OF_BOOKS)
@@ -89,7 +89,6 @@ public class BookRepositoryJpaTest {
         System.out.println("----------------------------------------------------------------------------------------------------------\n\n\n\n");
         assertThat(sessionFactory.getStatistics().getPrepareStatementCount()).isEqualTo(EXPECTED_QUERIES_COUNT);
     }
-
 
     @DisplayName("должен сохранять новую книгу")
     @Test
