@@ -15,6 +15,7 @@ import jakarta.persistence.NamedEntityGraph;
 import jakarta.persistence.Table;
 import jakarta.persistence.JoinColumn;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,13 +28,19 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 @Entity
 @Table(name = "books")
 @NamedEntityGraph(name = "otus-student-author-entity-graph",
         attributeNodes = {
             @NamedAttributeNode("author")
-        }
-)
+        })
+@NamedEntityGraph(name = "otus-student-author-genres-entity-graph",
+        attributeNodes = {
+                @NamedAttributeNode("author"),
+                @NamedAttributeNode("genres")
+        })
+
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
