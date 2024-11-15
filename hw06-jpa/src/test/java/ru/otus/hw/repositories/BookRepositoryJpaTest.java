@@ -1,5 +1,7 @@
 package ru.otus.hw.repositories;
 
+import lombok.val;
+import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,7 +14,6 @@ import ru.otus.hw.models.Book;
 import ru.otus.hw.models.Genre;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,7 +22,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Import(JpaBookRepository.class)
 public class BookRepositoryJpaTest {
 
-    private static final int BOOKS_COUNT = 3;
+    private static final int EXPECTED_NUMBER_OF_BOOKS = 3;
+    private static final int EXPECTED_QUERIES_COUNT = 2;
+
     private static final long FIRST_BOOK_ID = 1L;
     private static final String FIRST_BOOK_TITLE = "BookTitle_1";
 
@@ -55,19 +58,38 @@ public class BookRepositoryJpaTest {
     @DisplayName("загружать книгу по id")
     @Test
     void shouldFindBookById() {
-        Optional<Book> book = bookRepository.findById(FIRST_BOOK_ID);
-        assertThat(book)
-                .isNotEmpty()
-                .get()
-                .hasFieldOrPropertyWithValue("title", FIRST_BOOK_TITLE);
+        val optionalActualBook = bookRepository.findById(FIRST_BOOK_ID);
+        val expectedBook = em.find(Book.class, FIRST_BOOK_ID);
+        assertThat(optionalActualBook).isPresent().get()
+                .usingRecursiveComparison().isEqualTo(expectedBook);
+
     }
 
     @DisplayName("загружать список всех книг")
     @Test
     void shouldFindAllBooks() {
         var books = bookRepository.findAll();
-        assertThat(books).hasSize(BOOKS_COUNT);
+        assertThat(books).hasSize(EXPECTED_NUMBER_OF_BOOKS);
     }
+
+    @DisplayName("должен загружать список всех книг с полной информацией о них")
+    @Test
+    void shouldReturnCorrectBooksListWithAllInfo() {
+        SessionFactory sessionFactory = em.getEntityManager().getEntityManagerFactory()
+                .unwrap(SessionFactory.class);
+        sessionFactory.getStatistics().setStatisticsEnabled(true);
+
+
+        System.out.println("\n\n\n\n----------------------------------------------------------------------------------------------------------");
+        val books = bookRepository.findAll();
+        assertThat(books).isNotNull().hasSize(EXPECTED_NUMBER_OF_BOOKS)
+                .allMatch(s -> !s.getTitle().equals(""))
+                .allMatch(s -> s.getGenres() != null && s.getGenres().size() > 0)
+                .allMatch(s -> s.getAuthor() != null);
+        System.out.println("----------------------------------------------------------------------------------------------------------\n\n\n\n");
+        assertThat(sessionFactory.getStatistics().getPrepareStatementCount()).isEqualTo(EXPECTED_QUERIES_COUNT);
+    }
+
 
     @DisplayName("должен сохранять новую книгу")
     @Test
