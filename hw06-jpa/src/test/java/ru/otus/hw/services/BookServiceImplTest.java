@@ -29,6 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BookServiceImplTest {
 
     private static final int EXPECTED_NUMBER_OF_BOOKS = 3;
+    private static final int EXPECTED_NUMBER_OF_GENRES_OF_FIRST_BOOK = 2;
 
     private static final long FIRST_BOOK_ID = 1L;
     private static final String FIRST_BOOK_TITLE = "BookTitle_1";
@@ -70,6 +71,9 @@ public class BookServiceImplTest {
         assertThat(actualBooks).isNotEmpty()
                 .hasSize(EXPECTED_NUMBER_OF_BOOKS)
                 .hasOnlyElementsOfType(Book.class);
+
+        assertThat(actualBooks.get(0).getAuthor().getId()).isEqualTo(FIRST_AUTHOR_ID);
+        assertThat(actualBooks.get(0).getGenres().size()).isEqualTo(EXPECTED_NUMBER_OF_GENRES_OF_FIRST_BOOK);
     }
 
     @DisplayName("сохранять новую книгу")
