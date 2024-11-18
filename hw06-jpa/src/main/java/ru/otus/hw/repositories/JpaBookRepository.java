@@ -34,7 +34,12 @@ public class JpaBookRepository implements BookRepository {
         EntityGraph<?> entityGraph = em.getEntityGraph("otus-student-author-entity-graph");
         TypedQuery<Book> query = em.createQuery("select distinct b from Book b ", Book.class);
         query.setHint(FETCH.getKey(), entityGraph);
-        return query.getResultList();
+
+        List<Book> books = query.getResultList();
+        if (!books.isEmpty()) {
+            books.get(0).getGenres().size();
+        }
+        return books;
     }
 
     @Override
