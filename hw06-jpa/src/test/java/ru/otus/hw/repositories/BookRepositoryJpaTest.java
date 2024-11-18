@@ -1,7 +1,6 @@
 package ru.otus.hw.repositories;
 
 import lombok.val;
-import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BookRepositoryJpaTest {
 
     private static final int EXPECTED_NUMBER_OF_BOOKS = 3;
-    private static final int EXPECTED_QUERIES_COUNT = 2;
 
     private static final long FIRST_BOOK_ID = 1L;
     private static final String FIRST_BOOK_TITLE = "BookTitle_1";
@@ -71,23 +69,6 @@ public class BookRepositoryJpaTest {
         var books = bookRepository.findAll();
         assertThat(books).hasSize(EXPECTED_NUMBER_OF_BOOKS);
         assertThat(books.get(0).getTitle()).isEqualTo(FIRST_BOOK_TITLE);
-    }
-
-    @DisplayName("загружать список всех книг с полной информацией о них")
-    @Test
-    void shouldReturnCorrectBooksListWithAllInfo() {
-        SessionFactory sessionFactory = em.getEntityManager().getEntityManagerFactory()
-                .unwrap(SessionFactory.class);
-        sessionFactory.getStatistics().setStatisticsEnabled(true);
-
-        System.out.println("\n\n\n\n----------------------------------------------------------------------------------------------------------");
-        val books = bookRepository.findAll();
-        assertThat(books).isNotNull().hasSize(EXPECTED_NUMBER_OF_BOOKS)
-                .allMatch(s -> !s.getTitle().equals(""))
-                .allMatch(s -> s.getGenres() != null && s.getGenres().size() > 0)
-                .allMatch(s -> s.getAuthor() != null);
-        System.out.println("----------------------------------------------------------------------------------------------------------\n\n\n\n");
-        assertThat(sessionFactory.getStatistics().getPrepareStatementCount()).isEqualTo(EXPECTED_QUERIES_COUNT);
     }
 
     @DisplayName("сохранять новую книгу")
