@@ -33,7 +33,13 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional(readOnly = true)
     public List<Book> findAll() {
-        return bookRepository.findAll();
+        var books = bookRepository.findAll();
+
+        if (!isEmpty(books)) {
+            books.get(0).getGenres().size();
+        }
+
+        return books;
     }
 
     @Override
@@ -61,7 +67,7 @@ public class BookServiceImpl implements BookService {
 
         var author = authorRepository.findById(authorId)
                 .orElseThrow(() -> new EntityNotFoundException("Author with id %d not found".formatted(authorId)));
-        var genres = genreRepository.findAllByIds(genresIds);
+        var genres = genreRepository.findAllByIdIn(genresIds);
         if (isEmpty(genres) || genresIds.size() != genres.size()) {
             throw new EntityNotFoundException("One or all genres with ids %s not found".formatted(genresIds));
         }

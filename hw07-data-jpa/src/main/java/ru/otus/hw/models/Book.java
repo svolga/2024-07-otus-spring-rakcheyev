@@ -1,5 +1,6 @@
 package ru.otus.hw.models;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -14,6 +15,7 @@ import jakarta.persistence.NamedEntityGraph;
 import jakarta.persistence.Table;
 import jakarta.persistence.JoinColumn;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,14 +28,18 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 @Entity
 @Table(name = "books")
-@NamedEntityGraph(name = "otus-student-genres-author-entity-graph",
+@NamedEntityGraph(name = "book-author-entity-graph",
         attributeNodes = {
-            @NamedAttributeNode("author"),
-            @NamedAttributeNode("genres")
-        }
-)
+            @NamedAttributeNode("author")
+        })
+@NamedEntityGraph(name = "book-author-genres-entity-graph",
+        attributeNodes = {
+                @NamedAttributeNode("author"),
+                @NamedAttributeNode("genres")
+        })
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,7 +53,7 @@ public class Book {
     private Author author;
 
     @Fetch(FetchMode.SUBSELECT)
-    @ManyToMany(targetEntity = Genre.class, fetch = FetchType.LAZY)
+    @ManyToMany(targetEntity = Genre.class, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(name = "books_genres", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private List<Genre> genres;

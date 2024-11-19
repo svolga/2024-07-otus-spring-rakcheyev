@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Репозиторий Comment должен ")
 @DataJpaTest
-@Import({JpaCommentRepository.class, JpaBookRepository.class})
+@Import(BookRepository.class)
 public class CommentRepositoryJpaTest {
 
     private static final int COMMENTS_FOR_BOOK1_COUNT = 1;

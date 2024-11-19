@@ -16,7 +16,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Репозиторий Genre должен ")
 @DataJpaTest
-@Import(JpaGenreRepository.class)
 public class GenreRepositoryJpaTest {
 
     private static final long FIRST_GENRE_ID = 1L;
@@ -57,7 +56,7 @@ public class GenreRepositoryJpaTest {
     @Test
     void shouldFindAllGenresByIds() {
 
-        var searchedGenres = genreRepository.findAllByIds(
+        var searchedGenres = genreRepository.findAllByIdIn(
                 Set.of(FIRST_GENRE_ID, SECOND_GENRE_ID, THIRD_GENRE_ID,
                         FOURTH_GENRE_ID, FIFTH_GENRE_ID, SIXTH_GENRE_ID));
 
