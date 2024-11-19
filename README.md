@@ -23,3 +23,6 @@ svolga@rambler.ru
 
 # hw05
 Использовать возможности Spring JDBC и spring-boot-starter-jdbc для подключения к реляционным базам данных
+
+# hw07
+приложение со слоем репозиториев на Spring Data JPA
