@@ -25,4 +25,4 @@ svolga@rambler.ru
 Использовать возможности Spring JDBC и spring-boot-starter-jdbc для подключения к реляционным базам данных
 
 # hw07
-приложение со слоем репозиториев на Spring Data JPA
+Приложение со слоем репозиториев на Spring Data JPA
