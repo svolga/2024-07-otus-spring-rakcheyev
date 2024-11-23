@@ -23,3 +23,7 @@ svolga@rambler.ru
 
 # hw05
 Использовать возможности Spring JDBC и spring-boot-starter-jdbc для подключения к реляционным базам данных
+
+# hw06
+писать ORM DAO с помощью Spring ORM + JPA + Hibernate (в качестве JPA Vendor-a) в Spring приложениях;
+использовать JPQL (аналог HQL) для построения SQL-подобных запросов.
