@@ -16,19 +16,29 @@ import ru.otus.hw.repositories.GenreRepository;
 @ChangeLog
 public class DatabaseChangelog {
 
-    private Author author1;
-    private Author author2;
-    private Author author3;
-    private Genre genre1;
-    private Genre genre2;
-    private Genre genre3;
-    private Genre genre4;
-    private Genre genre5;
-    private Genre genre6;
-    private Book book1;
-    private Book book2;
+    private static final String AUTHOR_NAME = "svolga";
 
-    private final static String AUTHOR_NAME = "svolga";
+    private Author author1;
+
+    private Author author2;
+
+    private Author author3;
+
+    private Genre genre1;
+
+    private Genre genre2;
+
+    private Genre genre3;
+
+    private Genre genre4;
+
+    private Genre genre5;
+
+    private Genre genre6;
+
+    private Book book1;
+
+    private Book book2;
 
     @ChangeSet(order = "001", id = "dropDb", author = AUTHOR_NAME, runAlways = true)
     public void dropDb(MongoDatabase db) {
@@ -71,5 +81,4 @@ public class DatabaseChangelog {
         val comment3 = new Comment("3", "Book2_Comment_3", book2);
         repository.save(comment3);
     }
-
 }

@@ -1,6 +1,5 @@
 package ru.otus.hw.repositories;
 
-import com.mongodb.client.MongoClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
