@@ -7,7 +7,6 @@ import ru.otus.hw.converters.AuthorConverter;
 import ru.otus.hw.models.Author;
 import ru.otus.hw.services.AuthorService;
 
-import java.sql.SQLException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 

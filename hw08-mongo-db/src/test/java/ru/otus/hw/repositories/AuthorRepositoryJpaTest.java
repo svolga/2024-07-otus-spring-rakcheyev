@@ -30,8 +30,6 @@ public class AuthorRepositoryJpaTest {
     private AuthorRepository authorRepository;
 
     private List<Author> authors;
-    @Autowired
-    private MongoClient mongo;
 
     @BeforeEach
     void setUp() {

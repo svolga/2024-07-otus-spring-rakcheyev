@@ -27,7 +27,6 @@ public class DatabaseChangelog {
     private Genre genre6;
     private Book book1;
     private Book book2;
-    private Book book3;
 
     private final static String AUTHOR_NAME = "svolga";
 
