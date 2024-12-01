@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Репозиторий Genre должен ")
 @DataMongoTest
-public class GenreRepositoryJpaTest {
+public class GenreRepositoryTest {
 
     private static final String FIRST_GENRE_ID = "1";
     private static final String SECOND_GENRE_ID = "2";

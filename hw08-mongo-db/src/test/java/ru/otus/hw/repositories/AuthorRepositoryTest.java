@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Репозиторий Author должен ")
 @DataMongoTest
-public class AuthorRepositoryJpaTest {
+public class AuthorRepositoryTest {
 
     private static final int AUTHORS_COUNT = 3;
 

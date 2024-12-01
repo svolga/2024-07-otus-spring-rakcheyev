@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Репозиторий Book должен ")
 @DataMongoTest
-public class BookRepositoryJpaTest {
+public class BookRepositoryTest {
 
     private static final String FIRST_BOOK_ID = "1";
     private static final String CREATED_BOOK_ID = "4";
