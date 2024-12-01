@@ -5,11 +5,15 @@ import org.junit.jupiter.api.DisplayName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw.models.Author;
 import ru.otus.hw.models.Book;
+import ru.otus.hw.models.Comment;
 import ru.otus.hw.models.Genre;
 
 import java.util.List;
@@ -47,6 +51,9 @@ public class BookServiceImplTest {
 
     @Autowired
     private BookService bookService;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     @Test
     @DisplayName("загружать книгу по id")
@@ -108,11 +115,21 @@ public class BookServiceImplTest {
     @DisplayName("удалять книгу по id ")
     @Test
     void shouldDeleteBook() {
+
+        var query = new Query(Criteria.where("book._id").is(FIRST_BOOK_ID));
+
         assertThat(bookService.findById(FIRST_BOOK_ID)).isPresent();
+
+        var actualComments = mongoTemplate.find(query, Comment.class);
+        assertThat(actualComments).isNotEmpty();
+
         bookService.deleteById(FIRST_BOOK_ID);
 
         var actualBook = bookService.findById(FIRST_BOOK_ID);
         assertThat(actualBook).isEmpty();
+
+        var afterDeletedBookComments = mongoTemplate.find(query, Comment.class);
+        assertThat(afterDeletedBookComments).isEmpty();
     }
 
     private static Book getFirstBook() {
