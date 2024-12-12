@@ -34,3 +34,7 @@ svolga@rambler.ru
 # hw08
 Использовать MongoDB и spring-data для хранения информации о книгах
 
+# hw0
+CRUD приложение с Web UI и хранением данных в БД
+
+
