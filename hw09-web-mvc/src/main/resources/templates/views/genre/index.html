@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Список жанров</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
+
+    <style type="text/css" th:inline="text">
+        [[h3]] {
+            background-image: url([[@{/listmark.png}]]);
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+
+    </style>
+</head>
+<body>
+
+
+<h3>Жанры</h3>
+
+<div class="navigation">
+    <a th:href="@{/}" href="index.html">Главная</a> |
+    <a th:href="@{/genre/create}" href="genre/create.html">Создать жанр</a>
+</div>
+
+<table class="items">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Название</th>
+        <th colspan="2">Действие</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="genre : ${genres}">
+        <td th:text="${genre.id}">1</td>
+        <td th:text="${genre.name}">John Doe</td>
+        <td>
+            <a th:href="@{/genre/edit(id=${genre.id})}" href="genre/edit.html">Изменить</a>
+        </td>
+        <td>
+            <a th:href="@{/genre/delete(id=${genre.id})}" href="genre/edit.html">Удалить</a>
+        </td>
+
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

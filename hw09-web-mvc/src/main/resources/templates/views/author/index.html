@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Список авторов</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
+
+    <style type="text/css" th:inline="text">
+        [[h3]] {
+            background-image: url([[@{/listmark.png}]]);
+            background-repeat: no-repeat;
+            padding: 2px;
+            padding-left: 30px;
+        }
+
+    </style>
+</head>
+<body>
+
+<h3>Авторы</h3>
+
+<div class="navigation">
+    <a th:href="@{/}" href="index.html">Главная</a> |
+    <a th:href="@{/author/create}" href="author/create.html">Создать автора</a>
+</div>
+
+<table class="items">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Название</th>
+        <th colspan="2">Действие</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="author : ${authors}" th:object="${author}">
+        <td th:text="*{id}">1</td>
+        <td th:text="*{fullName}">John Doe</td>
+        <td>
+            <a th:href="@{/author/edit(id=*{id})}" href="author/edit.html">Изменить</a>
+        </td>
+        <td>
+            <a th:href="@{/author/delete(id=*{id})}" href="author/edit.html">Удалить</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
