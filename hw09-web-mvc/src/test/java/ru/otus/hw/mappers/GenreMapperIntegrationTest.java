@@ -1,7 +1,9 @@
 package ru.otus.hw.mappers;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
 import ru.otus.hw.dto.GenreDto;
 import ru.otus.hw.models.Genre;
 
@@ -12,13 +14,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DisplayName("Mapper Genre должен ")
 public class GenreMapperIntegrationTest {
 
-    private GenreMapper genreMapper = new GenreMapperImpl();
+    private GenreMapper genreMapper;
 
     private static final long FIRST_GENRE_ID = 1L;
     private static final String FIRST_GENRE_NAME = "Genre_1";
 
     private static final long SECOND_GENRE_ID = 2L;
     private static final String SECOND_GENRE_NAME = "Genre_2";
+
+
+    @BeforeEach
+    void setup() {
+        genreMapper = Mappers.getMapper(GenreMapper.class);
+    }
 
     @Test
     @DisplayName("конвертировать в Dto")

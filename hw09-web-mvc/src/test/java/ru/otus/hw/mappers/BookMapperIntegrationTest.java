@@ -1,7 +1,9 @@
 package ru.otus.hw.mappers;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import ru.otus.hw.dto.AuthorDto;
@@ -21,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DataJpaTest
 public class BookMapperIntegrationTest {
 
-    private BookMapper bookMapper = new BookMapperImpl();
+    private BookMapper bookMapper;
 
     private static final long FIRST_BOOK_ID = 1L;
     private static final String FIRST_BOOK_TITLE = "BookTitle_1";
@@ -37,6 +39,11 @@ public class BookMapperIntegrationTest {
 
     @Autowired
     private BookRepository bookRepository;
+
+    @BeforeEach
+    void setup() {
+        bookMapper = Mappers.getMapper(BookMapper.class);
+    }
 
     @Test
     @DisplayName("конвертировать в Dto")
