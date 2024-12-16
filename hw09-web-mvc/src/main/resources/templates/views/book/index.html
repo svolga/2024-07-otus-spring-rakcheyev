@@ -54,7 +54,12 @@
             <a th:href="@{/book/edit(id=*{id})}" href="book/edit.html">Изменить</a>
         </td>
         <td>
-            <a th:href="@{/book/delete(id=*{id})}" href="book/edit.html">Удалить</a>
+            <form class="delete-form" action="views/book/edit.html" th:method="post"
+                  th:action="@{/book/delete}">
+                <input name="id" type="hidden" th:value="*{id}" value="Delete"/>
+                <button type="submit" class="link"><span>Удалить</span></button>
+            </form>
+
         </td>
     </tr>
     </tbody>

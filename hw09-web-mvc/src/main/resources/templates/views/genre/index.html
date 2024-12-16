@@ -34,14 +34,19 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="genre : ${genres}">
-        <td th:text="${genre.id}">1</td>
-        <td th:text="${genre.name}">John Doe</td>
+    <tr th:each="genre : ${genres}" th:object="${genre}">
+        <td th:text="*{id}">1</td>
+        <td th:text="*{name}">John Doe</td>
         <td>
-            <a th:href="@{/genre/edit(id=${genre.id})}" href="genre/edit.html">Изменить</a>
+            <a th:href="@{/genre/edit(id=*{id})}" href="genre/edit.html">Изменить</a>
         </td>
         <td>
-            <a th:href="@{/genre/delete(id=${genre.id})}" href="genre/edit.html">Удалить</a>
+            <form class="delete-form" action="views/genre/index.html" th:method="post"
+                  th:action="@{/genre/delete}">
+                <input name="id" type="hidden" th:value="*{id}" value="Delete"/>
+                <button type="submit" class="link"><span>Удалить</span></button>
+            </form>
+
         </td>
 
     </tr>

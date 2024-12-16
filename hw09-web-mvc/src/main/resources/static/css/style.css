@@ -62,3 +62,26 @@ select {
     margin-bottom: 30px;
 }
 
+button {
+    overflow: visible;
+    width: auto;
+}
+button.link {
+    font-family: "Verdana" sans-serif;
+    text-align: left;
+    color: blue;
+    background: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+
+    -moz-user-select: text;
+}
+button.link span {
+    text-decoration: underline;
+}
+button.link:hover span,
+button.link:focus span {
+    color: black;
+}

@@ -40,7 +40,7 @@ public class GenreController {
 
     @PostMapping("/genre/edit")
     public String updateGenre(@Valid @ModelAttribute("genre") GenreDto genre,
-                              BindingResult bindingResult, Model model) {
+                              BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return EDIT_FILE;
         }
@@ -51,7 +51,7 @@ public class GenreController {
 
     @PostMapping("/genre/create")
     public String createGenre(@Valid @ModelAttribute("genre") GenreDto genre,
-                              BindingResult bindingResult, Model model) {
+                              BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return EDIT_FILE;
         }
@@ -67,7 +67,7 @@ public class GenreController {
         return EDIT_FILE;
     }
 
-    @GetMapping("/genre/delete")
+    @PostMapping("/genre/delete")
     public String deleteGenre(@RequestParam("id") long id) {
         genreService.delete(id);
         return REDIRECT_INDEX;

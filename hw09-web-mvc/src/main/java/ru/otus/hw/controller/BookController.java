@@ -80,7 +80,7 @@ public class BookController {
         return EDIT_FILE;
     }
 
-    @GetMapping("/book/delete")
+    @PostMapping("/book/delete")
     public String deleteBook(@RequestParam("id") long id) {
         bookService.deleteById(id);
         return REDIRECT_INDEX;

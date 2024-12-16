@@ -40,7 +40,11 @@
             <a th:href="@{/author/edit(id=*{id})}" href="author/edit.html">Изменить</a>
         </td>
         <td>
-            <a th:href="@{/author/delete(id=*{id})}" href="author/edit.html">Удалить</a>
+            <form class="delete-form" action="views/author/index.html" th:method="post"
+                  th:action="@{/author/delete}">
+                <input name="id" type="hidden" th:value="*{id}" value="Delete"/>
+                <button type="submit" class="link"><span>Удалить</span></button>
+            </form>
         </td>
     </tr>
     </tbody>

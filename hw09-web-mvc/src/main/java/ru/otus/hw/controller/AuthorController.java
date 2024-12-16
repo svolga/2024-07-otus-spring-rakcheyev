@@ -40,7 +40,7 @@ public class AuthorController {
 
     @PostMapping("/author/edit")
     public String updateAuthor(@Valid @ModelAttribute("author") AuthorDto author,
-                               BindingResult bindingResult, Model model) {
+                               BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return EDIT_FILE;
         }
@@ -51,7 +51,7 @@ public class AuthorController {
 
     @PostMapping("/author/create")
     public String createAutor(@Valid @ModelAttribute("author") AuthorDto author,
-                              BindingResult bindingResult, Model model) {
+                              BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return EDIT_FILE;
         }
@@ -66,7 +66,7 @@ public class AuthorController {
         return EDIT_FILE;
     }
 
-    @GetMapping("/author/delete")
+    @PostMapping("/author/delete")
     public String deleteAutor(@RequestParam("id") long id) {
         authorService.delete(id);
         return REDIRECT_INDEX;
