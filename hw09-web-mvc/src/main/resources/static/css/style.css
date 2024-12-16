@@ -67,7 +67,6 @@ button {
     width: auto;
 }
 button.link {
-    font-family: "Verdana" sans-serif;
     text-align: left;
     color: blue;
     background: none;
