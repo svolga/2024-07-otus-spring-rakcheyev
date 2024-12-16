@@ -168,7 +168,7 @@ class BookControllerTest {
     void deleteBook() throws Exception {
         doNothing().when(bookService).deleteById(anyLong());
 
-        mvc.perform(get("/book/delete")
+        mvc.perform(post("/book/delete")
                         .param("id", "1"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl(REDIRECT_INDEX));
