@@ -50,7 +50,7 @@ public class AuthorController {
     }
 
     @PostMapping("/author/create")
-    public String createAutor(@Valid @ModelAttribute("author") AuthorDto author,
+    public String createAuthor(@Valid @ModelAttribute("author") AuthorDto author,
                               BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return EDIT_FILE;
