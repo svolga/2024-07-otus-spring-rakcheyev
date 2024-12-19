@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Список книг</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
+</head>
+<body>
+
+<h3>Книги</h3>
+
+<div class="navigation">
+    <a th:href="@{/}" href="index.html">Главная</a> |
+    <a th:href="@{/book/create}" href="book/create.html">Создать книгу</a>
+
+    <h4>Справочники</h4>
+    <div>
+        <a th:href="@{/author}" href="views/author/index.html">Авторы</a>
+    </div>
+
+    <div>
+        <a th:href="@{/genre}" href="views/genre/index.html">Жанры</a>
+    </div>
+
+</div>
+
+<table class="items">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Название</th>
+        <th>Жанры</th>
+        <th>Автор</th>
+        <th colspan="2">Действие</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${books}" th:object="${book}">
+        <td th:text="*{id}">1</td>
+        <td th:text="*{title}">John Doe</td>
+        <td th:text="*{genreTitles}">Genres</td>
+        <td th:text="*{authorTitle}">Author</td>
+        <td>
+            <a th:href="@{/book/edit(id=*{id})}" href="book/edit.html">Изменить</a>
+        </td>
+        <td>
+            <form class="delete-form" action="views/book/edit.html" th:method="post"
+                  th:action="@{/book/delete}">
+                <input name="id" type="hidden" th:value="*{id}" value="Delete"/>
+                <button type="submit" class="link"><span>Удалить</span></button>
+            </form>
+
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
