@@ -3,7 +3,6 @@ package ru.otus.hw.mappers;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-import org.springframework.stereotype.Component;
 import ru.otus.hw.dto.BookDto;
 import ru.otus.hw.dto.BookInfoDto;
 import ru.otus.hw.models.Author;
