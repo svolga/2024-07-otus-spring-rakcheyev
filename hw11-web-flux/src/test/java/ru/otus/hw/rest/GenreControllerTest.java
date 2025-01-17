@@ -138,7 +138,7 @@ class GenreControllerTest {
         var genre = new Genre(FIRST_GENRE_ID, FIRST_GENRE_NAME);
         var genreUpdated = new Genre(genre.getId(), UPDATED_GENRE_NAME);
 
-        given(genreRepository.findById(genre.getId())).willReturn(Mono.just(genreUpdated));
+        given(genreRepository.existsById(genre.getId())).willReturn(Mono.just(true));
         given(genreRepository.save(genreUpdated)).willReturn(Mono.just(genreUpdated));
 
         var result = webTestClient
@@ -163,7 +163,7 @@ class GenreControllerTest {
     void shouldNotUpdateGenreWIthNotValidGenreId() {
         var genreUpdated = new Genre(UPDATED_GENRE_ID, UPDATED_GENRE_NAME);
 
-        given(genreRepository.findById(genreUpdated.getId())).willReturn(Mono.empty());
+        given(genreRepository.existsById(genreUpdated.getId())).willReturn(Mono.just(false));
         given(genreRepository.save(genreUpdated)).willReturn(Mono.empty());
 
         webTestClient

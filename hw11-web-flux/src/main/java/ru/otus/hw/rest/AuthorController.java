@@ -48,10 +48,12 @@ public class AuthorController {
 
     @PutMapping("/api/v1/author")
     public Mono<ResponseEntity<AuthorDto>> updateAuthor(@Valid @RequestBody AuthorDto authorDto) {
-        return authorRepository.findById(authorDto.getId())
-                .flatMap(author ->
+
+        return authorRepository.existsById(authorDto.getId())
+                .thenReturn(authorDto)
+                .flatMap(authorDto1 ->
                         authorRepository
-                                .save(authorMapper.toEntity(authorDto)))
+                                .save(authorMapper.toEntity(authorDto1)))
                 .map(author -> new ResponseEntity<>(authorMapper.toDto(author), HttpStatus.OK))
                 .switchIfEmpty(Mono.fromCallable(() -> ResponseEntity.notFound().build()));
     }

@@ -139,7 +139,7 @@ class AuthorControllerTest {
         var author = new Author(FIRST_AUTHOR_ID, FIRST_AUTHOR_NAME);
         var authorUpdated = new Author(author.getId(), UPDATED_AUTHOR_NAME);
 
-        given(authorRepository.findById(author.getId())).willReturn(Mono.just(authorUpdated));
+        given(authorRepository.existsById(author.getId())).willReturn(Mono.just(true));
         given(authorRepository.save(authorUpdated)).willReturn(Mono.just(authorUpdated));
 
         var result = webTestClient
@@ -165,7 +165,7 @@ class AuthorControllerTest {
 
         var authorUpdated = new Author(UPDATED_AUTHOR_ID, UPDATED_AUTHOR_NAME);
 
-        given(authorRepository.findById(authorUpdated.getId())).willReturn(Mono.empty());
+        given(authorRepository.existsById(authorUpdated.getId())).willReturn(Mono.just(false));
         given(authorRepository.save(authorUpdated)).willReturn(Mono.empty());
 
         webTestClient

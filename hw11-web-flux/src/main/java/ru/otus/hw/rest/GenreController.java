@@ -48,11 +48,10 @@ public class GenreController {
 
     @PutMapping("/api/v1/genre")
     public Mono<ResponseEntity<GenreDto>> updateGenre(@Valid @RequestBody GenreDto genreDto) {
-        return genreRepository.findById(genreDto.getId())
-                .flatMap(author ->
-                        genreRepository
-                                .save(genreMapper.toEntity(genreDto)))
-                .map(author -> new ResponseEntity<>(genreMapper.toDto(author), HttpStatus.OK))
+        return genreRepository.existsById(genreDto.getId())
+                .thenReturn(genreDto)
+                .flatMap(genreDto1 -> genreRepository.save(genreMapper.toEntity(genreDto1)))
+                .map(genre -> new ResponseEntity<>(genreMapper.toDto(genre), HttpStatus.OK))
                 .switchIfEmpty(Mono.fromCallable(() -> ResponseEntity.notFound().build()));
     }
 
