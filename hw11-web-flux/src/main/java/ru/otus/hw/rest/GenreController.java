@@ -49,8 +49,8 @@ public class GenreController {
     @PutMapping("/api/v1/genre")
     public Mono<ResponseEntity<GenreDto>> updateGenre(@Valid @RequestBody GenreDto genreDto) {
         return genreRepository.existsById(genreDto.getId())
-                .thenReturn(genreDto)
-                .flatMap(genreDto1 -> genreRepository.save(genreMapper.toEntity(genreDto1)))
+                .thenReturn(genreMapper.toEntity(genreDto))
+                .flatMap(genreRepository::save)
                 .map(genre -> new ResponseEntity<>(genreMapper.toDto(genre), HttpStatus.OK))
                 .switchIfEmpty(Mono.fromCallable(() -> ResponseEntity.notFound().build()));
     }
