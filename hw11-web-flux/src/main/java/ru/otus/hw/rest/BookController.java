@@ -19,6 +19,7 @@ import ru.otus.hw.mappers.BookMapper;
 import ru.otus.hw.models.Book;
 import ru.otus.hw.repositories.AuthorRepository;
 import ru.otus.hw.repositories.BookRepository;
+import ru.otus.hw.repositories.CommentRepository;
 import ru.otus.hw.repositories.GenreRepository;
 
 import java.util.Set;
@@ -35,6 +36,7 @@ public class BookController {
 
     private final BookMapper bookMapper;
     private final BookRepository bookRepository;
+    private final CommentRepository commentRepository;
 
     @GetMapping("/api/v1/book")
     public Flux<BookInfoDto> getBooks(){
@@ -52,6 +54,7 @@ public class BookController {
     @DeleteMapping("/api/v1/book/{id}")
     public Mono<ResponseEntity<String>> deleteBook(@PathVariable("id") String id) {
         return bookRepository.findById(id)
+                .flatMap(book -> commentRepository.deleteAllByBookId(book.getId()).thenReturn(book))
                 .flatMap(book -> bookRepository.deleteById(id).thenReturn(book))
                 .map(book -> {
                     log.info("Deleted book: {}", book);

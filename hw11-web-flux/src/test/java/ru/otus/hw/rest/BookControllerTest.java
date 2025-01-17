@@ -26,6 +26,7 @@ import ru.otus.hw.models.Book;
 import ru.otus.hw.models.Genre;
 import ru.otus.hw.repositories.AuthorRepository;
 import ru.otus.hw.repositories.BookRepository;
+import ru.otus.hw.repositories.CommentRepository;
 import ru.otus.hw.repositories.GenreRepository;
 
 import java.util.List;
@@ -54,6 +55,9 @@ class BookControllerTest {
 
     @MockBean
     private GenreRepository genreRepository;
+
+    @MockBean
+    private CommentRepository commentRepository;
 
     @Autowired
     private BookMapper bookMapper;
@@ -214,6 +218,7 @@ class BookControllerTest {
 
         given(bookRepository.findById(book.getId())).willReturn(Mono.just(book));
         given(bookRepository.deleteById(book.getId())).willReturn(Mono.empty());
+        given(commentRepository.deleteAllByBookId(book.getId())).willReturn(Mono.empty());
 
         var result = webTestClient
                 .delete().uri("/api/v1/book/%s".formatted(FIRST_BOOK_ID))
