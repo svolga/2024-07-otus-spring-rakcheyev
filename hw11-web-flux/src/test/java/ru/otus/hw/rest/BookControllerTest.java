@@ -216,7 +216,6 @@ class BookControllerTest {
 
         var book = new Book(FIRST_BOOK_ID, BOOK_TITLE_UPDATED, author, genres);
 
-        given(bookRepository.findById(book.getId())).willReturn(Mono.just(book));
         given(bookRepository.deleteById(book.getId())).willReturn(Mono.empty());
         given(commentRepository.deleteAllByBookId(book.getId())).willReturn(Mono.empty());
 
@@ -224,7 +223,7 @@ class BookControllerTest {
                 .delete().uri("/api/v1/book/%s".formatted(FIRST_BOOK_ID))
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
-                .expectStatus().isOk()
+                .expectStatus().isNoContent()
                 .returnResult(String.class)
                 .getResponseBody();
 

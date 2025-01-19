@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -39,7 +40,7 @@ public class BookController {
     private final CommentRepository commentRepository;
 
     @GetMapping("/api/v1/book")
-    public Flux<BookInfoDto> getBooks(){
+    public Flux<BookInfoDto> getBooks() {
         return bookRepository.findAll().map(bookMapper::toBookInfoDto);
     }
 
@@ -52,19 +53,15 @@ public class BookController {
     }
 
     @DeleteMapping("/api/v1/book/{id}")
-    public Mono<ResponseEntity<String>> deleteBook(@PathVariable("id") String id) {
-        return bookRepository.findById(id)
-                .flatMap(book -> commentRepository.deleteAllByBookId(book.getId()).thenReturn(book))
-                .flatMap(book -> bookRepository.deleteById(id).thenReturn(book))
-                .map(book -> {
-                    log.info("Deleted book: {}", book);
-                    return ResponseEntity.status(HttpStatus.OK).body("Book: " + book.getTitle() + " deleted!");
-                })
-                .defaultIfEmpty(ResponseEntity.status(HttpStatus.NOT_FOUND).body("bookId: " + id + " Not found"));
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public Mono<ResponseEntity<Void>> deleteBook(@PathVariable("id") String id) {
+        return commentRepository.deleteAllByBookId(id)
+                .and(bookRepository.deleteById(id))
+                .then(Mono.fromCallable(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT)));
     }
 
     @PostMapping("/api/v1/book")
-    public Mono<ResponseEntity<BookDto>>  createBook(@Valid @RequestBody BookDto bookDto) {
+    public Mono<ResponseEntity<BookDto>> createBook(@Valid @RequestBody BookDto bookDto) {
         bookDto.setId(null);
         return saveBook(bookDto, bookDto.getAuthorDto().getId(), bookDto.getGenreDtos())
                 .map(book -> new ResponseEntity<>(bookMapper.toDto(book), HttpStatus.OK));
