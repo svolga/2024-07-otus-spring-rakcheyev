@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -47,23 +48,19 @@ public class GenreController {
     }
 
     @PutMapping("/api/v1/genre")
-    public Mono<ResponseEntity<GenreDto>> updateGenre(@Valid @RequestBody GenreDto genreDto) {
-        return genreRepository.existsById(genreDto.getId())
-                .thenReturn(genreMapper.toEntity(genreDto))
-                .flatMap(genreRepository::save)
-                .map(genre -> new ResponseEntity<>(genreMapper.toDto(genre), HttpStatus.OK))
+    public Mono<ResponseEntity<GenreDto>> updateGenre(@Valid @RequestBody GenreDto dto) {
+        return Mono.just(dto)
+                .filterWhen(genreDto -> genreRepository.existsById(genreDto.getId()))
+                .flatMap(genreDto -> genreRepository.save(genreMapper.toEntity(genreDto)))
+                .map(author -> new ResponseEntity<>(genreMapper.toDto(author), HttpStatus.OK))
                 .switchIfEmpty(Mono.fromCallable(() -> ResponseEntity.notFound().build()));
     }
 
     @DeleteMapping("/api/v1/genre/{id}")
-    public Mono<ResponseEntity<String>> deleteGenre(@PathVariable("id") String id) {
-        return genreRepository.findById(id)
-                .flatMap(genre -> genreRepository.deleteById(id).thenReturn(genre))
-                .map(genre -> {
-                    log.info("Deleted genre: {}", genre);
-                    return ResponseEntity.status(HttpStatus.OK).body("Genre: " + genre.getName() + " deleted!");
-                })
-                .defaultIfEmpty(ResponseEntity.status(HttpStatus.NOT_FOUND).body("genreId: " + id + " Not found"));
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public Mono<ResponseEntity<Void>> deleteGenre(@PathVariable("id") String id) {
+        return genreRepository.deleteById(id)
+                .then(Mono.fromCallable(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT)));
     }
 
 }

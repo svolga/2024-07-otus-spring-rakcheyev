@@ -178,17 +178,14 @@ class GenreControllerTest {
     @Test
     @DisplayName("удалять жанр по id")
     void shouldCorrectDeleteGenre() {
-
         var genre = new Genre(FIRST_GENRE_ID, FIRST_GENRE_NAME);
-
-        given(genreRepository.findById(genre.getId())).willReturn(Mono.just(genre));
         given(genreRepository.deleteById(genre.getId())).willReturn(Mono.empty());
 
         var result = webTestClient
                 .delete().uri("/api/v1/genre/%s".formatted(genre.getId()))
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
-                .expectStatus().isOk()
+                .expectStatus().isNoContent()
                 .returnResult(String.class)
                 .getResponseBody();
 
