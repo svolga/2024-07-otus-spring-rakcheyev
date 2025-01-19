@@ -182,14 +182,13 @@ class AuthorControllerTest {
     void shouldCorrectDeleteAuthor() {
         var author = new Author(FIRST_AUTHOR_ID, FIRST_AUTHOR_NAME);
 
-        given(authorRepository.findById(author.getId())).willReturn(Mono.just(author));
         given(authorRepository.deleteById(author.getId())).willReturn(Mono.empty());
 
         var result = webTestClient
                 .delete().uri("/api/v1/author/%s".formatted(author.getId()))
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
-                .expectStatus().isOk()
+                .expectStatus().isNoContent()
                 .returnResult(String.class)
                 .getResponseBody();
 
