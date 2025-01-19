@@ -25,8 +25,6 @@ import ru.otus.hw.repositories.GenreRepository;
 
 import java.util.Set;
 
-import static org.reflections.Reflections.log;
-
 @RestController
 @RequiredArgsConstructor
 public class BookController {

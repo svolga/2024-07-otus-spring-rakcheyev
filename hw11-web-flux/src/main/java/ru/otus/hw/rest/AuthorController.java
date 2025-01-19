@@ -18,8 +18,6 @@ import ru.otus.hw.dto.AuthorDto;
 import ru.otus.hw.mappers.AuthorMapper;
 import ru.otus.hw.repositories.AuthorRepository;
 
-import static org.reflections.Reflections.log;
-
 @RestController
 @RequiredArgsConstructor
 public class AuthorController {

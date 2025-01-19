@@ -18,8 +18,6 @@ import ru.otus.hw.dto.GenreDto;
 import ru.otus.hw.mappers.GenreMapper;
 import ru.otus.hw.repositories.GenreRepository;
 
-import static org.reflections.Reflections.log;
-
 @RestController
 @RequiredArgsConstructor
 public class GenreController {
