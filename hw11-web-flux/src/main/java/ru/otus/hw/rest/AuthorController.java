@@ -17,11 +17,13 @@ import reactor.core.publisher.Mono;
 import ru.otus.hw.dto.AuthorDto;
 import ru.otus.hw.mappers.AuthorMapper;
 import ru.otus.hw.repositories.AuthorRepository;
+import ru.otus.hw.repositories.BookRepository;
 
 @RestController
 @RequiredArgsConstructor
 public class AuthorController {
 
+    private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
     private final AuthorMapper authorMapper;
 
@@ -58,6 +60,7 @@ public class AuthorController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<ResponseEntity<Void>> deleteAuthor(@PathVariable("id") String id) {
         return authorRepository.deleteById(id)
+                .and(bookRepository.deleteAllBooksByAuthorId(id))
                 .then(Mono.fromCallable(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT)));
     }
 

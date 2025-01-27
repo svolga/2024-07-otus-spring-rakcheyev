@@ -2,6 +2,7 @@ package ru.otus.hw.rest;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,15 +16,24 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.otus.hw.dto.GenreDto;
+import ru.otus.hw.mappers.BookMapper;
 import ru.otus.hw.mappers.GenreMapper;
+import ru.otus.hw.models.Book;
+import ru.otus.hw.models.Genre;
+import ru.otus.hw.repositories.BookRepository;
 import ru.otus.hw.repositories.GenreRepository;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class GenreController {
 
+    private final BookRepository bookRepository;
     private final GenreRepository genreRepository;
     private final GenreMapper genreMapper;
+    private final BookMapper bookMapper;
 
     @GetMapping("/api/v1/genre")
     public Flux<GenreDto> getGenres() {
@@ -57,8 +67,20 @@ public class GenreController {
     @DeleteMapping("/api/v1/genre/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<ResponseEntity<Void>> deleteGenre(@PathVariable("id") String id) {
-        return genreRepository.deleteById(id)
+
+        return genreRepository
+                .findById(id)
+                .doOnNext(genre -> {
+                    Flux<Book> booksFlux = bookRepository.findAllBooksByGenresIdIn(List.of(id));
+                    booksFlux.flatMap(book -> {
+                        List<Genre> genres = book.getGenres();
+                        genres.remove(genre);
+                        book.setGenres(genres);
+                        bookRepository.save(book).subscribe();
+                        return Mono.just(book);
+                    }).subscribe();
+                })
+                .and(genreRepository.deleteById(id))
                 .then(Mono.fromCallable(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT)));
     }
-
 }
