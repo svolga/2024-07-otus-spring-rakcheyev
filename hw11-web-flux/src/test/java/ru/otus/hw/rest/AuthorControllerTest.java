@@ -20,12 +20,15 @@ import reactor.test.StepVerifier;
 import ru.otus.hw.dto.AuthorDto;
 import ru.otus.hw.mappers.AuthorMapper;
 import ru.otus.hw.mappers.AuthorMapperImpl;
+import ru.otus.hw.mappers.BookMapperImpl;
 import ru.otus.hw.models.Author;
 import ru.otus.hw.repositories.AuthorRepository;
+import ru.otus.hw.repositories.BookRepository;
 
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -38,6 +41,9 @@ class AuthorControllerTest {
 
     @Autowired
     private WebTestClient webTestClient;
+
+    @MockBean
+    private BookRepository bookRepository;
 
     @MockBean
     private AuthorRepository authorRepository;
@@ -62,7 +68,6 @@ class AuthorControllerTest {
     @Test
     @DisplayName("возвращать список авторов")
     void shouldReturnCorrectAuthorList() {
-
         List<Author> authorsExpected = List.of(
                 new Author(FIRST_AUTHOR_ID, FIRST_AUTHOR_NAME),
                 new Author(SECOND_AUTHOR_ID, SECOND_AUTHOR_NAME)
@@ -86,7 +91,6 @@ class AuthorControllerTest {
 
         Assertions.assertThat(stepResult).isNotNull();
         stepResult.verifyComplete();
-
     }
 
     @Test
@@ -188,10 +192,10 @@ class AuthorControllerTest {
         var author = new Author(FIRST_AUTHOR_ID, FIRST_AUTHOR_NAME);
 
         given(authorRepository.deleteById(author.getId())).willReturn(Mono.empty());
+        given(bookRepository.deleteAllBooksByAuthorId(anyString())).willReturn(Flux.empty());
 
         var result = webTestClient
                 .delete().uri("/api/v1/author/%s".formatted(author.getId()))
-                .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isNoContent()
                 .returnResult(String.class)
@@ -199,7 +203,6 @@ class AuthorControllerTest {
 
         verify(authorRepository, times(1)).deleteById(author.getId());
         assertThat(result).isNotNull();
-
     }
 
 }

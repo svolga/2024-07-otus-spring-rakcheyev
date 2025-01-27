@@ -17,9 +17,13 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import ru.otus.hw.dto.GenreDto;
+import ru.otus.hw.mappers.BookMapperImpl;
 import ru.otus.hw.mappers.GenreMapper;
 import ru.otus.hw.mappers.GenreMapperImpl;
+import ru.otus.hw.models.Author;
+import ru.otus.hw.models.Book;
 import ru.otus.hw.models.Genre;
+import ru.otus.hw.repositories.BookRepository;
 import ru.otus.hw.repositories.GenreRepository;
 
 import java.util.List;
@@ -31,7 +35,7 @@ import static org.mockito.Mockito.verify;
 
 
 @DisplayName("Контроллер Genre должен ")
-@Import(GenreMapperImpl.class)
+@Import({GenreMapperImpl.class, BookMapperImpl.class})
 @ExtendWith(SpringExtension.class)
 @WebFluxTest(controllers = GenreController.class)
 class GenreControllerTest {
@@ -41,6 +45,9 @@ class GenreControllerTest {
 
     @MockBean
     private GenreRepository genreRepository;
+
+    @MockBean
+    private BookRepository bookRepository;
 
     @Autowired
     private GenreMapper mapper;
@@ -53,6 +60,12 @@ class GenreControllerTest {
 
     private static final String UPDATED_GENRE_ID = "100";
     private static final String UPDATED_GENRE_NAME = "Updated Genre";
+
+    private static final String FIRST_BOOK_ID = "1";
+    private static final String FIRST_BOOK_TITLE = "Book_1";
+
+    private static final String FIRST_AUTHOR_ID = "1";
+    private static final String FIRST_AUTHOR_NAME = "Author_1";
 
     @BeforeEach
     void setup() {
@@ -182,11 +195,18 @@ class GenreControllerTest {
     @DisplayName("удалять жанр по id")
     void shouldCorrectDeleteGenre() {
         var genre = new Genre(FIRST_GENRE_ID, FIRST_GENRE_NAME);
+        var book = new Book(FIRST_BOOK_ID, FIRST_BOOK_TITLE,
+                new Author(FIRST_AUTHOR_ID, FIRST_AUTHOR_NAME),
+                List.of(new Genre(FIRST_GENRE_ID, FIRST_GENRE_NAME))
+        );
+
+        given(genreRepository.findById(genre.getId())).willReturn(Mono.empty());
         given(genreRepository.deleteById(genre.getId())).willReturn(Mono.empty());
+        given(bookRepository.findAllBooksByGenresIdIn(List.of(genre.getId()))).willReturn(Flux.empty());
+        given(bookRepository.save(book)).willReturn(Mono.just(book));
 
         var result = webTestClient
                 .delete().uri("/api/v1/genre/%s".formatted(genre.getId()))
-                .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isNoContent()
                 .returnResult(String.class)
