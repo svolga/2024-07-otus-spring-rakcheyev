@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.otus.hw.dto.GenreDto;
-import ru.otus.hw.mappers.BookMapper;
 import ru.otus.hw.mappers.GenreMapper;
-import ru.otus.hw.models.Book;
 import ru.otus.hw.models.Genre;
 import ru.otus.hw.repositories.BookRepository;
 import ru.otus.hw.repositories.GenreRepository;
@@ -33,7 +31,6 @@ public class GenreController {
     private final BookRepository bookRepository;
     private final GenreRepository genreRepository;
     private final GenreMapper genreMapper;
-    private final BookMapper bookMapper;
 
     @GetMapping("/api/v1/genre")
     public Flux<GenreDto> getGenres() {
@@ -70,17 +67,16 @@ public class GenreController {
 
         return genreRepository
                 .findById(id)
-                .doOnNext(genre -> {
-                    Flux<Book> booksFlux = bookRepository.findAllBooksByGenresIdIn(List.of(id));
-                    booksFlux.flatMap(book -> {
-                        List<Genre> genres = book.getGenres();
-                        genres.remove(genre);
-                        book.setGenres(genres);
-                        bookRepository.save(book).subscribe();
-                        return Mono.just(book);
-                    }).subscribe();
-                })
+                .doOnNext(genre -> bookRepository.findAllBooksByGenresIdIn(List.of(id))
+                        .flatMap(book -> {
+                            List<Genre> genres = book.getGenres();
+                            genres.remove(genre);
+                            book.setGenres(genres);
+                            bookRepository.save(book).subscribe();
+                            return Mono.just(book);
+                        }).subscribe())
                 .and(genreRepository.deleteById(id))
                 .then(Mono.fromCallable(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT)));
     }
+
 }
