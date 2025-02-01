@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${author.id == 0} ? 'Создать автора' : 'Изменить автора'"> Автор</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+    <link th:href="@{/css/bootstrap.min.css}"  type="text/css" rel="stylesheet"/>
+</head>
+<body>
+
+<form id="edit-form" action="views/author/edit.html" th:method="post" th:object="${author}"
+      th:action="*{id == 0} ? @{/author/create} : @{/author/edit}">
+
+    <h3 th:text="*{id == 0} ? 'Создать автора' : 'Изменить автора'">Author Info:</h3>
+
+    <div class="row">
+        <label for="id-input">ID:</label>
+        <input id="id-input" type="text" readonly="readonly" name="id" th:value="*{id}" value="1"/>
+    </div>
+
+    <div class="row">
+        <label for="author-name-input">Имя:</label>
+        <input id="author-name-input" name="fullName" type="text" th:value="*{fullName}" value="John Doe"/>
+        <div class="errors" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">Wrong author name error
+        </div>
+    </div>
+
+    <div class="row">
+        <div>
+            <button class="btn btn-primary" type="submit">Сохранить</button>
+            <a href="/views/author/index.html"  th:href="@{/author}"><button type="button" class="btn btn-secondary">Отменить</button></a>
+        </div>
+    </div>
+
+</form>
+
+</body>
+</html>
