@@ -176,7 +176,7 @@ function deleteAuthor(id) {
     })
         .then((value) => {
 
-            if (value.status == 409){
+            if (value.status === 409){
                 document.getElementById('errors-msg').innerText = "У автора есть книги. Сначала удалите книгу";
             }
             else{
@@ -197,7 +197,7 @@ function deleteGenre(id) {
     })
         .then((value) => {
 
-            if (value.status == 409){
+            if (value.status === 409){
                 document.getElementById('errors-msg').innerText = "Есть книга с таким жанром. Сначала удалите книгу";
             }
             else{
@@ -276,7 +276,7 @@ function saveGenre() {
     })
         .then(response => {
 
-            if(response.status == 409){
+            if(response.status === 409){
                 document.getElementById('errors-msg').innerText = "Ошибка обновления. Текущий жанр уже используется в книгах.";
             }
             else if (response.ok) {

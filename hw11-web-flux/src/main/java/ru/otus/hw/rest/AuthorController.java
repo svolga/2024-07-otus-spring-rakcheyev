@@ -21,8 +21,6 @@ import ru.otus.hw.repositories.BookRepository;
 
 import java.util.List;
 
-import static org.reflections.Reflections.log;
-
 @RestController
 @RequiredArgsConstructor
 public class AuthorController {
