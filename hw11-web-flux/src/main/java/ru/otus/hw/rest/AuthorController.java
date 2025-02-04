@@ -19,6 +19,10 @@ import ru.otus.hw.mappers.AuthorMapper;
 import ru.otus.hw.repositories.AuthorRepository;
 import ru.otus.hw.repositories.BookRepository;
 
+import java.util.List;
+
+import static org.reflections.Reflections.log;
+
 @RestController
 @RequiredArgsConstructor
 public class AuthorController {
@@ -49,19 +53,36 @@ public class AuthorController {
 
     @PutMapping("/api/v1/author")
     public Mono<ResponseEntity<AuthorDto>> updateAuthor(@Valid @RequestBody AuthorDto dto) {
+
         return Mono.just(dto)
                 .filterWhen(authorDto -> authorRepository.existsById(authorDto.getId()))
-                .flatMap(authorDto -> authorRepository.save(authorMapper.toEntity(authorDto)))
-                .map(author -> new ResponseEntity<>(authorMapper.toDto(author), HttpStatus.OK))
+                .flatMap(
+                        authorDto -> authorRepository.save(authorMapper.toEntity(authorDto))
+                                .and(
+                                        bookRepository.findAllBooksByAuthorIdIn(List.of(dto.getId()))
+                                                .flatMap(book -> {
+                                                    book.setAuthor(authorMapper.toEntity(dto));
+                                                    return bookRepository.save(book);
+                                                })
+                                )
+                                .thenReturn(new ResponseEntity<>(authorDto, HttpStatus.OK))
+                )
                 .switchIfEmpty(Mono.fromCallable(() -> ResponseEntity.notFound().build()));
     }
 
     @DeleteMapping("/api/v1/author/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<ResponseEntity<Void>> deleteAuthor(@PathVariable("id") String id) {
-        return authorRepository.deleteById(id)
-                .and(bookRepository.deleteAllBooksByAuthorId(id))
-                .then(Mono.fromCallable(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT)));
+
+        return bookRepository.existsBookByAuthorIdIn(List.of(id))
+                .filter(isExists -> !isExists)
+                .flatMap(isExists ->
+                        authorRepository.deleteById(id)
+                                .and(bookRepository.deleteAllBooksByAuthorId(id))
+                                .then(Mono.just(new ResponseEntity<Void>(HttpStatus.NO_CONTENT)))
+                )
+                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.CONFLICT));
+
     }
 
 }

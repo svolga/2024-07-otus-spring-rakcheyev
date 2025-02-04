@@ -17,7 +17,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.otus.hw.dto.GenreDto;
 import ru.otus.hw.mappers.GenreMapper;
-import ru.otus.hw.models.Genre;
 import ru.otus.hw.repositories.BookRepository;
 import ru.otus.hw.repositories.GenreRepository;
 
@@ -54,29 +53,26 @@ public class GenreController {
 
     @PutMapping("/api/v1/genre")
     public Mono<ResponseEntity<GenreDto>> updateGenre(@Valid @RequestBody GenreDto dto) {
-        return Mono.just(dto)
-                .filterWhen(genreDto -> genreRepository.existsById(genreDto.getId()))
-                .flatMap(genreDto -> genreRepository.save(genreMapper.toEntity(genreDto)))
-                .map(author -> new ResponseEntity<>(genreMapper.toDto(author), HttpStatus.OK))
-                .switchIfEmpty(Mono.fromCallable(() -> ResponseEntity.notFound().build()));
+        return bookRepository.existsBookByGenresIdIn(List.of(dto.getId()))
+                .filter(isExists -> !isExists)
+                .flatMap(isNotExists ->
+                        Mono.just(dto)
+                                .filterWhen(genreDto -> genreRepository.existsById(genreDto.getId()))
+                                .flatMap(genreDto -> genreRepository.save(genreMapper.toEntity(genreDto)))
+                                .map(genre -> new ResponseEntity<>(genreMapper.toDto(genre), HttpStatus.OK))
+                )
+                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.CONFLICT));
     }
 
     @DeleteMapping("/api/v1/genre/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public Mono<ResponseEntity<Void>> deleteGenre(@PathVariable("id") String id) {
-
-        return genreRepository
-                .findById(id)
-                .doOnNext(genre -> bookRepository.findAllBooksByGenresIdIn(List.of(id))
-                        .flatMap(book -> {
-                            List<Genre> genres = book.getGenres();
-                            genres.remove(genre);
-                            book.setGenres(genres);
-                            bookRepository.save(book).subscribe();
-                            return Mono.just(book);
-                        }).subscribe())
-                .and(genreRepository.deleteById(id))
-                .then(Mono.fromCallable(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT)));
+        return bookRepository.existsBookByGenresIdIn(List.of(id))
+                .filter(isExists -> !isExists)
+                .flatMap(isNotExists -> genreRepository.deleteById(id)
+                        .then(Mono.just(new ResponseEntity<Void>(HttpStatus.NO_CONTENT)))
+                )
+                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.CONFLICT));
     }
 
 }

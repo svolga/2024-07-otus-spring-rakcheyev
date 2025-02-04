@@ -21,12 +21,15 @@ import ru.otus.hw.dto.AuthorDto;
 import ru.otus.hw.mappers.AuthorMapper;
 import ru.otus.hw.mappers.AuthorMapperImpl;
 import ru.otus.hw.models.Author;
+import ru.otus.hw.models.Book;
+import ru.otus.hw.models.Genre;
 import ru.otus.hw.repositories.AuthorRepository;
 import ru.otus.hw.repositories.BookRepository;
 
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -49,6 +52,12 @@ class AuthorControllerTest {
 
     @Autowired
     private AuthorMapper mapper;
+
+    private static final String FIRST_BOOK_ID = "1";
+    private static final String FIRST_BOOK_TITLE = "Book_1";
+
+    private static final String FIRST_GENRE_ID = "1";
+    private static final String FIRST_GENRE_NAME = "Genre_1";
 
     private static final String FIRST_AUTHOR_ID = "1";
     private static final String FIRST_AUTHOR_NAME = "Author_1";
@@ -146,9 +155,17 @@ class AuthorControllerTest {
 
         var author = new Author(FIRST_AUTHOR_ID, FIRST_AUTHOR_NAME);
         var authorUpdated = new Author(author.getId(), UPDATED_AUTHOR_NAME);
+        var updatedBook = new Book(
+                        FIRST_BOOK_ID,
+                        FIRST_BOOK_TITLE,
+                        authorUpdated,
+                        List.of(new Genre(FIRST_GENRE_ID, FIRST_GENRE_NAME))
+                );
 
         given(authorRepository.existsById(author.getId())).willReturn(Mono.just(true));
         given(authorRepository.save(authorUpdated)).willReturn(Mono.just(authorUpdated));
+        given(bookRepository.findAllBooksByAuthorIdIn(anyList())).willReturn(Flux.empty());
+        given(bookRepository.save(updatedBook)).willReturn(Mono.just(updatedBook));
 
         var result = webTestClient
                 .put().uri("/api/v1/author")
@@ -190,6 +207,7 @@ class AuthorControllerTest {
     void shouldCorrectDeleteAuthor() {
         var author = new Author(FIRST_AUTHOR_ID, FIRST_AUTHOR_NAME);
 
+        given(bookRepository.existsBookByAuthorIdIn(anyList())).willReturn(Mono.just(false));
         given(authorRepository.deleteById(author.getId())).willReturn(Mono.empty());
         given(bookRepository.deleteAllBooksByAuthorId(anyString())).willReturn(Flux.empty());
 

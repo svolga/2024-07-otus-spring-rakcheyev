@@ -20,8 +20,6 @@ import ru.otus.hw.dto.GenreDto;
 import ru.otus.hw.mappers.BookMapperImpl;
 import ru.otus.hw.mappers.GenreMapper;
 import ru.otus.hw.mappers.GenreMapperImpl;
-import ru.otus.hw.models.Author;
-import ru.otus.hw.models.Book;
 import ru.otus.hw.models.Genre;
 import ru.otus.hw.repositories.BookRepository;
 import ru.otus.hw.repositories.GenreRepository;
@@ -29,6 +27,7 @@ import ru.otus.hw.repositories.GenreRepository;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -154,6 +153,7 @@ class GenreControllerTest {
         var genre = new Genre(FIRST_GENRE_ID, FIRST_GENRE_NAME);
         var genreUpdated = new Genre(genre.getId(), UPDATED_GENRE_NAME);
 
+        given(bookRepository.existsBookByGenresIdIn(anyList())).willReturn(Mono.just(false));
         given(genreRepository.existsById(genre.getId())).willReturn(Mono.just(true));
         given(genreRepository.save(genreUpdated)).willReturn(Mono.just(genreUpdated));
 
@@ -174,36 +174,13 @@ class GenreControllerTest {
         stepResult.verifyComplete();
     }
 
-    @DisplayName("возвращать статус 404 при несуществующем id жанре")
-    @Test
-    void shouldNotUpdateGenreWIthNotValidGenreId() {
-        var genreUpdated = new Genre(UPDATED_GENRE_ID, UPDATED_GENRE_NAME);
-
-        given(genreRepository.existsById(genreUpdated.getId())).willReturn(Mono.just(false));
-        given(genreRepository.save(genreUpdated)).willReturn(Mono.empty());
-
-        webTestClient
-                .put().uri("/api/v1/genre")
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(genreUpdated)
-                .exchange()
-                .expectStatus().isNotFound();
-    }
-
     @Test
     @DisplayName("удалять жанр по id")
     void shouldCorrectDeleteGenre() {
         var genre = new Genre(FIRST_GENRE_ID, FIRST_GENRE_NAME);
-        var book = new Book(FIRST_BOOK_ID, FIRST_BOOK_TITLE,
-                new Author(FIRST_AUTHOR_ID, FIRST_AUTHOR_NAME),
-                List.of(new Genre(FIRST_GENRE_ID, FIRST_GENRE_NAME))
-        );
 
-        given(genreRepository.findById(genre.getId())).willReturn(Mono.empty());
+        given(bookRepository.existsBookByGenresIdIn(anyList())).willReturn(Mono.just(false));
         given(genreRepository.deleteById(genre.getId())).willReturn(Mono.empty());
-        given(bookRepository.findAllBooksByGenresIdIn(List.of(genre.getId()))).willReturn(Flux.empty());
-        given(bookRepository.save(book)).willReturn(Mono.just(book));
 
         var result = webTestClient
                 .delete().uri("/api/v1/genre/%s".formatted(genre.getId()))

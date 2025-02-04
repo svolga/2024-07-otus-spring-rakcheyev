@@ -170,24 +170,42 @@ function outputGenres(genres) {
 
 function deleteAuthor(id) {
     console.log('deleteAuthor ....................', id);
+    document.getElementById('errors-msg').innerText = "";
     fetch(`api/v1/author/${id}`, {
         method: 'DELETE',
     })
-        .then(() => {
-            console.log(`removed author ${id}`);
-            document.getElementById(id).remove();
+        .then((value) => {
+
+            if (value.status == 409){
+                document.getElementById('errors-msg').innerText = "У автора есть книги. Сначала удалите книгу";
+            }
+            else{
+                console.log(`value`, value.status );
+                console.log(`removed author ${id}`);
+                document.getElementById(id).remove();
+            }
+
         })
         .catch(error => console.error("Ошибка удаления автора ", error));
 }
 
 function deleteGenre(id) {
     console.log('deleteGenre ....................', id);
+    document.getElementById('errors-msg').innerText = "";
     fetch(`api/v1/genre/${id}`, {
         method: 'DELETE',
     })
-        .then(() => {
-            console.log(`removed genre ${id}`);
-            document.getElementById(id).remove();
+        .then((value) => {
+
+            if (value.status == 409){
+                document.getElementById('errors-msg').innerText = "Есть книга с таким жанром. Сначала удалите книгу";
+            }
+            else{
+                console.log(`value`, value.status );
+                console.log(`removed genre ${id}`);
+                document.getElementById(id).remove();
+            }
+
         })
         .catch(error => console.error("Ошибка удаления жанра ", error));
 }
@@ -257,8 +275,11 @@ function saveGenre() {
         body: JSON.stringify(genre)
     })
         .then(response => {
-            console.log('response', response.json());
-            if (response.ok) {
+
+            if(response.status == 409){
+                document.getElementById('errors-msg').innerText = "Ошибка обновления. Текущий жанр уже используется в книгах.";
+            }
+            else if (response.ok) {
                 window.location.href = "/genre";
             }
         })
