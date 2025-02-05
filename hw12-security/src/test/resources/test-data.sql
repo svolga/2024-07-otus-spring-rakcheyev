@@ -19,7 +19,7 @@ values ('Book1_comment1', 1),
        ('Book3_Comment1', 3), ('Book3_Comment1', 3), ('Book3_Comment3', 3)
 ;
 
-insert into users(username, password, authority)
+insert into users(username, password, role)
 values ('user', '$2y$10$sX2qt/F94.TkrBRntKT0luRPX6/Q3D8ti.GdKL.ePmYk6wgFV9rym', 'USER'),
        ('manager', '$2y$10$fbk9bU0qHYSi.fDgisauAeeP6AJabkGWGpzSEz9Z4HylHrlBxIbwy', 'MANAGER'),
        ('admin', '$2y$10$CkuUgG713P.J6uX/2J4QQOS3d78iZsCmNUBvPbv7sYGRb4UqOlzAm', 'ADMIN');
