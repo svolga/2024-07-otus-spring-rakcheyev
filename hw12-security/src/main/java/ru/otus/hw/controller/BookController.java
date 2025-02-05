@@ -71,7 +71,6 @@ public class BookController {
         return REDIRECT_INDEX;
     }
 
-
     @GetMapping("/book/create")
     public String create(Model model) {
         model.addAttribute("book", new BookDto());

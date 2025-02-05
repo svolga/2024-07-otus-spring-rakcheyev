@@ -6,10 +6,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.otus.hw.controller.BookController;
 import ru.otus.hw.dto.AuthorDto;
 import ru.otus.hw.dto.BookDto;
@@ -19,19 +21,22 @@ import ru.otus.hw.mappers.BookMapper;
 import ru.otus.hw.models.Author;
 import ru.otus.hw.models.Book;
 import ru.otus.hw.models.Genre;
+import ru.otus.hw.repositories.UserRepository;
+import ru.otus.hw.security.CustomUserDetailService;
 import ru.otus.hw.services.AuthorService;
 import ru.otus.hw.services.BookService;
 import ru.otus.hw.services.GenreService;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -40,11 +45,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @DisplayName("Контроллер Book должен ")
-@WebMvcTest(BookController.class)
+@WebMvcTest(controllers = BookController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
 class BookControllerTest {
 
     @Autowired
     private MockMvc mvc;
+
+    @MockBean
+    UserRepository userRepository;
+
+    @MockBean
+    CustomUserDetailService customUserDetailService;
 
     @MockBean
     private BookService bookService;
@@ -73,9 +84,6 @@ class BookControllerTest {
     private final static String INDEX_FILE = "views/book/index";
     private final static String EDIT_FILE = "views/book/edit";
 
-    private final static String userName = "admin";
-    private final static String userRole = "ROLE_ADMIN";
-
     private BookMapper bookMapper;
 
     @BeforeEach
@@ -91,9 +99,7 @@ class BookControllerTest {
         );
         when(bookService.findAll()).thenReturn(books);
 
-        mvc.perform(get("/")
-                        .with(user(userName).authorities(new SimpleGrantedAuthority(userRole)))
-                )
+        mvc.perform(get("/"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("books"))
                 .andExpect(model().attribute("books", books))
@@ -109,9 +115,7 @@ class BookControllerTest {
         when(genreService.findAll()).thenReturn(genres);
         when(authorService.findAll()).thenReturn(authors);
 
-        mvc.perform(get("/book/create")
-                        .with(user(userName).authorities(new SimpleGrantedAuthority(userRole)))
-                )
+        mvc.perform(get("/book/create"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("book", "genres", "authors"))
                 .andExpect(model().attribute("authors", authors))
@@ -131,7 +135,6 @@ class BookControllerTest {
                 .thenReturn(bookMapper.toDto(expectedBook));
 
         mvc.perform(post("/book/create")
-                        .with(user(userName).authorities(new SimpleGrantedAuthority(userRole)))
                         .with(csrf())
                         .flashAttr("book", bookDto))
                 .andExpect(status().is3xxRedirection())
@@ -148,9 +151,7 @@ class BookControllerTest {
         when(genreService.findAll()).thenReturn(genres);
         when(authorService.findAll()).thenReturn(authors);
 
-        mvc.perform(get("/book/create")
-                        .with(user(userName).authorities(new SimpleGrantedAuthority(userRole)))
-                )
+        mvc.perform(get("/book/create"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("book", "genres", "authors"))
                 .andExpect(model().attribute("authors", authors))
@@ -172,9 +173,7 @@ class BookControllerTest {
         when(bookService.update(bookDto)).thenReturn(bookMapper.toDto(book));
 
         mvc.perform(post("/book/edit").flashAttr("book", bookDto)
-                        .with(csrf())
-                        .with(user(userName).authorities(new SimpleGrantedAuthority(userRole)))
-                )
+                        .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl(REDIRECT_INDEX));
     }
@@ -185,7 +184,6 @@ class BookControllerTest {
 
         mvc.perform(post("/book/delete")
                         .with(csrf())
-                        .with(user(userName).authorities(new SimpleGrantedAuthority(userRole)))
                         .param("id", "1"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl(REDIRECT_INDEX));
@@ -198,4 +196,5 @@ class BookControllerTest {
     private static Set<Long> getGenres() {
         return Set.of(FIRST_GENRE_ID, SECOND_GENRE_ID);
     }
+
 }
