@@ -16,7 +16,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.otus.hw.dto.AuthorDto;
 import ru.otus.hw.mappers.AuthorMapper;
-import ru.otus.hw.models.Book;
 import ru.otus.hw.repositories.AuthorRepository;
 import ru.otus.hw.repositories.BookRepository;
 
@@ -56,7 +55,7 @@ public class AuthorController {
                 .filterWhen(authorDto -> authorRepository.existsById(authorDto.getId()))
                 .map(authorMapper::toEntity)
                 .flatMap(authorRepository::save);
-        
+
         var books = bookRepository.findAllBooksByAuthorIdIn(List.of(dto.getId()));
 
         return Flux.zip(books, author)
