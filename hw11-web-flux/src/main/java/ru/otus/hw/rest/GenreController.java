@@ -53,14 +53,12 @@ public class GenreController {
 
     @PutMapping("/api/v1/genre")
     public Mono<ResponseEntity<GenreDto>> updateGenre(@Valid @RequestBody GenreDto dto) {
-        return bookRepository.existsBookByGenresIdIn(List.of(dto.getId()))
-                .filter(isExists -> !isExists)
-                .flatMap(isNotExists ->
-                        Mono.just(dto)
-                                .filterWhen(genreDto -> genreRepository.existsById(genreDto.getId()))
-                                .flatMap(genreDto -> genreRepository.save(genreMapper.toEntity(genreDto)))
-                                .map(genre -> new ResponseEntity<>(genreMapper.toDto(genre), HttpStatus.OK))
-                )
+        var existBooks = bookRepository.existsBookByGenresIdIn(List.of(dto.getId()));
+        var existGenre = genreRepository.existsById(dto.getId());
+        return Mono.zip(existGenre, existBooks)
+                .filter(t -> t.getT1() && !t.getT2())
+                .flatMap(t -> genreRepository.save(genreMapper.toEntity(dto)))
+                .map(genre -> new ResponseEntity<>(genreMapper.toDto(genre), HttpStatus.OK))
                 .defaultIfEmpty(new ResponseEntity<>(HttpStatus.CONFLICT));
     }
 
