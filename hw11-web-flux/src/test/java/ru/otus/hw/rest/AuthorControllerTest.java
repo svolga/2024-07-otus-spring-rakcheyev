@@ -29,7 +29,9 @@ import ru.otus.hw.repositories.BookRepository;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -191,6 +193,7 @@ class AuthorControllerTest {
         var authorUpdated = new Author(UPDATED_AUTHOR_ID, UPDATED_AUTHOR_NAME);
 
         given(authorRepository.existsById(authorUpdated.getId())).willReturn(Mono.just(false));
+        given(bookRepository.findAllBooksByAuthorIdIn(List.of(authorUpdated.getId()))).willReturn(Flux.empty());
         given(authorRepository.save(authorUpdated)).willReturn(Mono.empty());
 
         webTestClient

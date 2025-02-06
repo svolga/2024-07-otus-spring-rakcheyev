@@ -16,6 +16,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import ru.otus.hw.dto.AuthorDto;
 import ru.otus.hw.mappers.AuthorMapper;
+import ru.otus.hw.models.Book;
 import ru.otus.hw.repositories.AuthorRepository;
 import ru.otus.hw.repositories.BookRepository;
 
@@ -51,20 +52,21 @@ public class AuthorController {
 
     @PutMapping("/api/v1/author")
     public Mono<ResponseEntity<AuthorDto>> updateAuthor(@Valid @RequestBody AuthorDto dto) {
-
-        return Mono.just(dto)
+        var author = Mono.just(dto)
                 .filterWhen(authorDto -> authorRepository.existsById(authorDto.getId()))
-                .flatMap(
-                        authorDto -> authorRepository.save(authorMapper.toEntity(authorDto))
-                                .and(
-                                        bookRepository.findAllBooksByAuthorIdIn(List.of(dto.getId()))
-                                                .flatMap(book -> {
-                                                    book.setAuthor(authorMapper.toEntity(dto));
-                                                    return bookRepository.save(book);
-                                                })
-                                )
-                                .thenReturn(new ResponseEntity<>(authorDto, HttpStatus.OK))
-                )
+                .map(authorMapper::toEntity)
+                .flatMap(authorRepository::save);
+        
+        var books = bookRepository.findAllBooksByAuthorIdIn(List.of(dto.getId()));
+
+        return Flux.zip(books, author)
+                .map(t -> {
+                    t.getT1().setAuthor(t.getT2());
+                    return t.getT1();
+                })
+                .flatMap(bookRepository::save)
+                .then(author)
+                .map(a -> new ResponseEntity<>(authorMapper.toDto(a), HttpStatus.OK))
                 .switchIfEmpty(Mono.fromCallable(() -> ResponseEntity.notFound().build()));
     }
 
