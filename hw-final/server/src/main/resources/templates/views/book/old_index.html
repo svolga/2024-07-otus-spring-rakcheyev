@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:insert="~{views/fragment/head :: setHeader('Книги')}"></head>
+
+<body onload="showBooks()">
+
+<div th:insert="~{views/fragment/topmenu}"></div>
+<span th:replace="~{views/fragment/title :: setHeader('Книги','Информация об авторах')}"></span>
+
+<div class="container-fluid main-container">
+    <div class="table-responsive">
+    <table class="table table-striped table-sm">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Название</th>
+            <th>Жанры</th>
+            <th>Автор</th>
+            <th colspan="2">Действие</th>
+        </tr>
+        </thead>
+        <tbody id="table-items">
+        </tbody>
+    </table>
+
+    </div>
+</div>
+
+<footer th:insert="~{views/fragment/footer}"></footer>
+
+</body>
+</html>

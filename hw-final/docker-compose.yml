@@ -1,0 +1,25 @@
+services:
+  lotus-server:
+    build: server
+    image: lotus_server_image
+    container_name: lotus_server
+    ports:
+        - "8080:8080"
+    depends_on:
+        - lotus-db
+    environment:
+        - SPRING_DATASOURCE_URL=jdbc:postgresql://lotus-db:5432/lotus
+        - SPRING_DATASOURCE_USERNAME=lotus
+        - SPRING_DATASOURCE_PASSWORD=lotus
+        - LOTUS_SERVER_URL=http://lotus-server:8080
+
+  lotus-db:
+    image: postgres:16-alpine
+    container_name: lotus-db
+    ports:
+        - "6541:5432"
+    environment:
+        - POSTGRES_PASSWORD=user
+        - POSTGRES_USER=user
+        - POSTGRES_DB=lotus
+

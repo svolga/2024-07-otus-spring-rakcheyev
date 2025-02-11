@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{views/fragment/head :: setHeader('Группа')}"></head>
+
+<body onload="loadGroup()">
+
+<span th:replace="~{views/fragment/topmenu}"></span>
+
+<!--- start -->
+<div class="container-fluid">
+    <div class="row">
+
+        <nav th:replace="~{views/fragment/leftmenu}"></nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4"><div class="chartjs-size-monitor" style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Группа</h1>
+            </div>
+
+            <div class="table-responsive">
+
+                <form id="edit-form" action="views/group/edit.html" th:method="post">
+                    <div class="form-group">
+                        <label for="id-input">ID:</label>
+                        <input id="id-input" class="form-control" type="text" readonly="readonly" name="id" th:value="*{id}" value="1"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="courseId">Курс*:</label>
+                        <select id="courseId" name="courseId" class="form-control">
+                            <option th:value="0" th:disabled="disabled" label="-- Выберите курс --" th:selected="selected"></option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="group-name-input">Название:</label>
+                        <input id="group-name-input"
+                               class="form-control"
+                               name="name"
+                               type="text"
+                               value="Название группы"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="group-start-input">Старт группы:</label>
+                        <input id="group-start-input"
+                               class="form-control date"
+                               name="start"
+                               width="250"
+                               type="date"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="group-start-input">Завершение группы:</label>
+                        <input id="group-end-input"
+                               class="form-control date"
+                               name="end"
+                               width="250"
+                               type="date"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="group-info-input">Описание</label>
+                        <textarea id="group-info-input"  class="form-control" name="info" rows="5"></textarea>
+                    </div>
+
+                    <button type="button" class="btn btn-primary"  onclick="saveGroup()">Сохранить</button>
+                    <a class="btn btn-secondary" href="views/group/index.html" th:href="@{/group}">
+                        Отменить
+                    </a>
+                </form>
+
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- end -->
+
+<footer th:insert="~{views/fragment/footer}"></footer>
+
+</body>
+</html>
