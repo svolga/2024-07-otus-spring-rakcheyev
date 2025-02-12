@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{views/fragment/head :: setHeader('Преподаватели')}"></head>
+<head th:insert="~{views/fragment/head :: setHeader('Пользователи')}"></head>
 
 <body onload="loadTeacher()">
 
@@ -12,10 +12,10 @@
 
         <nav th:replace="~{views/fragment/leftmenu}"></nav>
 
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4"><div class="chartjs-size-monitor" style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
 
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">Преподаватель</h1>
+                <h1 class="h2">Пользователь</h1>
             </div>
 
             <div class="table-responsive">
@@ -27,69 +27,55 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="teacher-lastname-input">Фамилия:</label>
-                        <input id="teacher-lastname-input"
+                        <label for="username-input">Username:</label>
+                        <input id="username-input"
                                class="form-control"
-                               name="lastname"
+                               name="username"
                                type="text"
-                               value="Фамилия"
+                               placeholder="username"
+                               readonly = "readonly"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fullname-input">ФИО:</label>
+                        <input id="fullname-input"
+                               class="form-control"
+                               name="fullname"
+                               type="text"
+                               placeholder="ФИО"
+                               readonly = "readonly"
                                />
                     </div>
 
                     <div class="form-group">
-                        <label for="teacher-firstname-input">Имя:</label>
-                        <input id="teacher-firstname-input"
-                               class="form-control"
-                               name="firstname"
-                               type="text"
-                               value="Имя"
-                        />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="teacher-middlename-input">Отчество:</label>
-                        <input id="teacher-middlename-input"
-                               class="form-control"
-                               name="middlename"
-                               type="text"
-                               value="Отчество"
-                        />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="teacher-nickname-input">Nickname:</label>
-                        <input id="teacher-nickname-input"
-                               class="form-control"
-                               name="nickname"
-                               type="text"
-                               value="Nickname"
-                        />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="teacher-phone-input">Телефон:</label>
-                        <input id="teacher-phone-input"
+                        <label for="phone-input">Телефон:</label>
+                        <input id="phone-input"
                                class="form-control"
                                name="phone"
                                type="text"
-                               value="Телефон"
+                               placeholder="Телефон"
+                               readonly = "readonly"
                         />
                     </div>
 
                     <div class="form-group">
-                        <label for="teacher-email-input">E-Mail:</label>
-                        <input id="teacher-email-input"
+                        <label for="email-input">E-Mail:</label>
+                        <input id="email-input"
                                class="form-control"
                                name="email"
                                type="text"
-                               value="E-Mail"
+                               placeholder="E-Mail"
+                               readonly = "readonly"
                         />
                     </div>
 
                     <div class="form-group">
-                        <label for="teacher-info-input">Описание</label>
-                        <textarea id="teacher-info-input"  class="form-control" name="info" rows="5"></textarea>
+                        <label for="info-input">Специализация</label>
+                        <textarea id="info-input"  class="form-control" name="info" rows="5"></textarea>
                     </div>
+
+                    <div class="errors" id="errorId"></div>
 
                     <button type="button" class="btn btn-primary"  onclick="saveTeacher()">Сохранить</button>
                     <a class="btn btn-secondary" href="views/teacher/index.html" th:href="@{/teacher}">

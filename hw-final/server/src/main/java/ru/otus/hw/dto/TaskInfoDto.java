@@ -17,11 +17,7 @@ public class TaskInfoDto {
     @NotBlank(message = "Заполните название")
     @Size(min = 2, max = 255, message = "Значение должно быть в диапазоне {min} - {max}")
     private String name;
-
     private String info;
-    private String target;
-    private String shortInfo;
-    private String result;
     private LocalDateTime startAt;
     private String teacherName;
     private String groupName;

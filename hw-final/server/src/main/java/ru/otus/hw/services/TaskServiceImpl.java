@@ -9,17 +9,17 @@ import ru.otus.hw.exceptions.EntityNotFoundException;
 import ru.otus.hw.mappers.TaskMapper;
 import ru.otus.hw.models.Group;
 import ru.otus.hw.models.Task;
-import ru.otus.hw.models.Teacher;
+import ru.otus.hw.models.User;
 import ru.otus.hw.repositories.GroupRepository;
 import ru.otus.hw.repositories.TaskRepository;
-import ru.otus.hw.repositories.TeacherRepository;
+import ru.otus.hw.repositories.UserRepository;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class TaskServiceImpl implements TaskService {
-    private final TeacherRepository teacherRepository;
+    private final UserRepository userRepository;
     private final GroupRepository groupRepository;
     private final TaskRepository taskRepository;
 
@@ -66,17 +66,6 @@ public class TaskServiceImpl implements TaskService {
         taskRepository.deleteById(id);
     }
 
-/*    private Task save(long id, String title, long teacherId, long groupId) {
-
-        var teacher = teacherRepository.findById(teacherId)
-                .orElseThrow(() -> new EntityNotFoundException("Teacher with id %d not found".formatted(teacherId)));
-
-        var group = groupRepository.findById(groupId)
-                .orElseThrow(() -> new EntityNotFoundException("Group with id %d not found".formatted(groupId)));
-
-        var task = new Task(id, title, teacher, group);
-        return taskRepository.save(task);
-    }*/
 
     private void validate(long id) {
         var task = findById(id);
@@ -85,8 +74,8 @@ public class TaskServiceImpl implements TaskService {
         }
     }
 
-    private Teacher getTeacher(long teacherId) {
-        return teacherRepository.findById(teacherId)
+    private User getTeacher(long teacherId) {
+        return userRepository.findById(teacherId)
                 .orElseThrow(() -> new EntityNotFoundException("Teacher with id %d not found".formatted(teacherId)));
     }
 

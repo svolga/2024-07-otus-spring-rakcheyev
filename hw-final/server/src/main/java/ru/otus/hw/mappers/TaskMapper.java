@@ -8,7 +8,7 @@ import ru.otus.hw.dto.TaskDto;
 import ru.otus.hw.dto.TaskInfoDto;
 import ru.otus.hw.models.Group;
 import ru.otus.hw.models.Task;
-import ru.otus.hw.models.Teacher;
+import ru.otus.hw.models.User;
 
 import java.util.List;
 
@@ -19,8 +19,6 @@ public interface TaskMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "info", target = "info")
-    @Mapping(source = "target", target = "target")
-    @Mapping(source = "shortInfo", target = "shortInfo")
     @Mapping(source = "startAt", target = "startAt")
     @Mapping(source = "teacher", target = "teacherDto")
     @Mapping(source = "group", target = "groupDto")
@@ -29,8 +27,6 @@ public interface TaskMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "info", target = "info")
-    @Mapping(source = "target", target = "target")
-    @Mapping(source = "shortInfo", target = "shortInfo")
     @Mapping(source = "startAt", target = "startAt")
     @Mapping(source = "teacher", target = "teacherName", qualifiedByName = "getTeacherFullName")
     @Mapping(source = "group", target = "groupName", qualifiedByName = "getGroupName")
@@ -42,15 +38,12 @@ public interface TaskMapper {
 
     @Mapping(target = "teacher", ignore = true)
     @Mapping(target = "group", ignore = true)
-    default Task toEntity(TaskDto taskDto, Teacher teacher, Group group) {
+    default Task toEntity(TaskDto taskDto, User teacher, Group group) {
         return Task.builder()
                 .id(taskDto.getId())
                 .name(taskDto.getName())
                 .info(taskDto.getInfo())
-                .result(taskDto.getResult())
-                .shortInfo(taskDto.getShortInfo())
                 .startAt(taskDto.getStartAt())
-                .target(taskDto.getTarget())
                 .teacher(teacher)
                 .group(group)
                 .build();
@@ -62,7 +55,7 @@ public interface TaskMapper {
     }
 
     @Named("getTeacherFullName")
-    default String getTeacherFullName(Teacher teacher) {
+    default String getTeacherFullName(User teacher) {
         return String.format("%s %s %s", teacher.getLastName(), teacher.getFirstName(), teacher.getMiddleName());
     }
 

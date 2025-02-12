@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{views/fragment/head :: setHeader('Курс')}"></head>
+<head th:insert="~{views/fragment/head :: setHeader('Занятие')}"></head>
 
-<body onload="loadCourse()">
+<body onload="loadTask()">
 
 <span th:replace="~{views/fragment/topmenu}"></span>
+
+
 
 <!--- start -->
 <div class="container-fluid">
@@ -16,12 +18,12 @@
             <div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
 
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">Курс</h1>
+                <h1 class="h2">Занятие</h1>
             </div>
 
             <div class="table-responsive">
 
-                <form id="edit-form" action="views/course/edit.html" th:method="post">
+                <form id="edit-form" action="views/task/edit.html" th:method="post">
                     <div class="form-group">
                         <label for="id-input">ID:</label>
                         <input id="id-input" class="form-control" type="text" readonly="readonly" name="id" th:value="*{id}" value="1"/>
@@ -32,27 +34,43 @@
                                class="form-control"
                                name="name"
                                type="text"
-                               placeholder="Название курса"/>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="price-input">Стоимость:</label>
-                        <input id="price-input"
-                               class="form-control"
-                               name="price"
-                               type="number"
-                               placeholder="Стоимость"/>
+                               placeholder="Название занятия"/>
                     </div>
 
                     <div class="form-group">
                         <label for="info-input">Описание</label>
-                        <textarea id="info-input"  class="form-control" name="info" rows="5"></textarea>
+                        <textarea id="info-input"  class="form-control" name="info" rows="3" placeholder="Описание"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="start-input">Дата начала:</label>
+                        <input id="start-input"
+                               class="form-control date"
+                               name="start"
+                               width="250"
+                               type="date"
+                               placeholder = "Дата начала"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="groupId">Группа:</label>
+                        <select id="groupId" name="groupId" class="form-control">
+                            <option th:value="0" th:disabled="disabled" label="-- Выберите группу --" th:selected="selected"></option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="teacherId">Преподаватель:</label>
+                        <select id="teacherId" name="teacherId" class="form-control">
+                            <option th:value="0" th:disabled="disabled" label="-- Выберите преподавателя --" th:selected="selected"></option>
+                        </select>
                     </div>
 
                     <div class="errors" id="errorId"></div>
 
-                    <button type="button" class="btn btn-primary"  onclick="saveCourse()">Сохранить</button>
-                    <a class="btn btn-secondary" href="views/course/index.html" th:href="@{/course}">
+                    <button type="button" class="btn btn-primary"  onclick="saveTask()">Сохранить</button>
+                    <a class="btn btn-secondary" href="views/task/index.html" th:href="@{/task}">
                         Отменить
                     </a>
                 </form>

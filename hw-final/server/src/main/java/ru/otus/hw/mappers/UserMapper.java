@@ -6,7 +6,9 @@ import org.mapstruct.Named;
 import org.springframework.stereotype.Component;
 import ru.otus.hw.dto.UserDto;
 import ru.otus.hw.dto.UserInfoDto;
+import ru.otus.hw.dto.UserTeacherProfileDto;
 import ru.otus.hw.models.Role;
+import ru.otus.hw.models.UserTeacherProfile;
 import ru.otus.hw.models.User;
 
 import java.util.List;
@@ -35,6 +37,19 @@ public interface UserMapper {
     @Mapping(source = "roles", target = "roleTitles", qualifiedByName = "getRolesTitles")
     UserInfoDto toUserInfoDto(User user);
 
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "username", target = "username")
+    @Mapping(source = ".", target = "fullName", qualifiedByName = "getFullName")
+    @Mapping(source = "phone", target = "phone")
+    @Mapping(source = "email", target = "email")
+    @Mapping(source = "teacherProfile", target = "profileInfo", qualifiedByName = "getTeacherProfileInfo")
+    UserTeacherProfileDto toUserTeacherProfileDto(User user);
+
+    @Mapping(source = "id", target = "userId")
+    @Mapping(source = "profileInfo", target = "info")
+    UserTeacherProfile toUserTeacherProfileEntity (UserTeacherProfileDto userTeacherProfileDto);
+
+    List<UserTeacherProfileDto> toUserTeacherProfileDtos(List<User> users);
     List<UserDto> toDtos(List<User> users);
     List<UserInfoDto> toUserInfoDtos(List<User> users);
 
@@ -69,4 +84,10 @@ public interface UserMapper {
     default String getFullName(User user) {
         return String.format("%s %s %s", user.getLastName(), user.getFirstName(), user.getMiddleName());
     }
+
+    @Named("getTeacherProfileInfo")
+    default String getTeacherProfileInfo(UserTeacherProfile teacherProfile) {
+        return teacherProfile == null ? "" : teacherProfile.getInfo();
+    }
+
 }

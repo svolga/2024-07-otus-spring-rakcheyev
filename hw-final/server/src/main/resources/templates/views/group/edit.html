@@ -39,7 +39,7 @@
                                class="form-control"
                                name="name"
                                type="text"
-                               value="Название группы"/>
+                               placeholder="Название группы"/>
                     </div>
 
                     <div class="form-group">
@@ -49,6 +49,7 @@
                                name="start"
                                width="250"
                                type="date"
+                               placeholder = "Дата начала"
                         />
                     </div>
 
@@ -59,13 +60,16 @@
                                name="end"
                                width="250"
                                type="date"
+                               placeholder = "Дата завершения"
                         />
                     </div>
 
                     <div class="form-group">
                         <label for="group-info-input">Описание</label>
-                        <textarea id="group-info-input"  class="form-control" name="info" rows="5"></textarea>
+                        <textarea id="group-info-input"  class="form-control" name="info" rows="5" placeholder="Описание"></textarea>
                     </div>
+
+                    <div class="errors" id="errorId"></div>
 
                     <button type="button" class="btn btn-primary"  onclick="saveGroup()">Сохранить</button>
                     <a class="btn btn-secondary" href="views/group/index.html" th:href="@{/group}">

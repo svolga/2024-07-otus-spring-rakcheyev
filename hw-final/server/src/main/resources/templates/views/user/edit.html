@@ -32,7 +32,7 @@
                                class="form-control"
                                name="username"
                                type="text"
-                               value="Username"
+                               placeholder="username"
                         />
                     </div>
 
@@ -42,7 +42,7 @@
                                class="form-control"
                                name="lastname"
                                type="text"
-                               value="Фамилия"
+                               placeholder="Фамилия"
                                />
                     </div>
 
@@ -52,7 +52,7 @@
                                class="form-control"
                                name="firstname"
                                type="text"
-                               value="Имя"
+                               placeholder="Имя"
                         />
                     </div>
 
@@ -62,13 +62,13 @@
                                class="form-control"
                                name="middlename"
                                type="text"
-                               value="Отчество"
+                               placeholder="Отчество"
                         />
                     </div>
 
                     <div class="form-group">
                         <label for="roleId">Роли* :</label>
-                        <select size="10" name="roleId" id="roleId" class="form-control" multiple>
+                        <select size="4" name="roleId" id="roleId" class="form-control" multiple>
                             <option th:value="0" th:disabled="disabled" label="-- Выберите роли --" th:selected="selected"></option>
                         </select>
                     </div>
@@ -79,7 +79,7 @@
                                class="form-control"
                                name="phone"
                                type="text"
-                               value="Телефон"
+                               placeholder="Телефон"
                         />
                     </div>
 
@@ -89,9 +89,12 @@
                                class="form-control"
                                name="email"
                                type="text"
-                               value="E-Mail"
+                               placeholder="E-Mail"
                         />
                     </div>
+
+
+                    <div class="errors" id="errorId"></div>
 
                     <button type="button" class="btn btn-primary"  onclick="saveUser()">Сохранить</button>
                     <a class="btn btn-secondary" href="views/user/index.html" th:href="@{/user}">

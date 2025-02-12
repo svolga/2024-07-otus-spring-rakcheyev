@@ -34,6 +34,7 @@ create table courses (
         id bigserial,
         name varchar(255),
         info text,
+        price integer,
         primary key (id)
 );
 
@@ -47,35 +48,10 @@ create table groups (
          primary key (id)
 );
 
-create table teachers (
-        id bigserial,
-        nickname varchar(64),
-        first_name varchar(64),
-        last_name varchar(64),
-        middle_name varchar(64),
-        phone varchar(64),
-        email varchar(64),
-        info text,
-        primary key (id)
-);
-
-create table tasks (
-        id bigserial,
-        name varchar(255),
-        info text,
-        target text,
-        short_info text,
-        result text,
-        start_at date,
-        teacher_id bigint references teachers (id) on delete set null,
-        group_id bigint references groups (id) on delete set null,
-        primary key (id)
-);
-
-create table if not exists users
+create table users
 (
     id bigserial,
-    username  varchar(255),
+    username  varchar(255) unique,
     password  varchar(255),
     first_name varchar(255),
     middle_name varchar(255),
@@ -84,6 +60,22 @@ create table if not exists users
     phone varchar(32),
     role varchar(255),
     primary key (id)
+);
+
+create table tasks (
+       id bigserial,
+       name varchar(255),
+       info text,
+       start_at timestamp,
+       teacher_id bigint references users (id) on delete set null,
+       group_id bigint references groups (id) on delete set null,
+       primary key (id)
+);
+
+create table teachers_profiles(
+    user_id bigint references users(id) on delete cascade,
+    info text,
+    primary key (user_id)
 );
 
 create table roles (

@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequiredArgsConstructor
 public class TaskPageController {
-/*
+
     private final static String INDEX_FILE = "views/task/index";
     private final static String EDIT_FILE = "views/task/edit";
 
-    @GetMapping("/")
+    @GetMapping("/task")
     public String index() {
         return INDEX_FILE;
     }
@@ -27,5 +27,5 @@ public class TaskPageController {
     public String editPage(@RequestParam("id") long id, Model model) {
         model.addAttribute("id", id);
         return EDIT_FILE;
-    }*/
+    }
 }

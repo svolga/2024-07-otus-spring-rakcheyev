@@ -40,13 +40,13 @@ public class Group {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @Column(name = "info", nullable = true, unique = true)
+    @Column(name = "info", unique = true)
     private String info;
 
-    @Column(name = "start_at", nullable = true)
+    @Column(name = "start_at", nullable = false)
     private LocalDate startAt;
 
-    @Column(name = "end_at", nullable = true)
+    @Column(name = "end_at", nullable = false)
     private LocalDate endAt;
 
     @JoinColumn(name = "course_id")

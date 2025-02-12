@@ -16,4 +16,5 @@ public class CourseDto {
     private String name;
 
     private String info;
+    private int price;
 }

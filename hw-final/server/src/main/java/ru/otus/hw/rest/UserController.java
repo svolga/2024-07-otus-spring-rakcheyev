@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.otus.hw.dto.UserDto;
 import ru.otus.hw.dto.UserInfoDto;
+import ru.otus.hw.dto.UserTeacherProfileDto;
 import ru.otus.hw.services.UserService;
 
 import java.util.List;
@@ -44,5 +45,25 @@ public class UserController {
     @PutMapping("/api/v1/user")
     public UserDto updateUser(@Valid @RequestBody UserDto user) {
         return userService.update(user);
+    }
+
+    @GetMapping("/api/v1/teacher")
+    public List<UserTeacherProfileDto> getTeachers() {
+        return userService.findAllTeachers();
+    }
+
+    @GetMapping("/api/v1/teacher/{id}")
+    public UserTeacherProfileDto getTeacher(@PathVariable long id) {
+        return userService.findTeacherById(id);
+    }
+
+    @PutMapping("/api/v1/teacher")
+    public UserTeacherProfileDto updateTeacher(@Valid @RequestBody UserTeacherProfileDto userTeacherProfileDto) {
+        return userService.updateTeacherProfile(userTeacherProfileDto);
+    }
+
+    @GetMapping("/api/v1/student")
+    public List<UserInfoDto> getStudents() {
+        return userService.findAllStudents();
     }
 }

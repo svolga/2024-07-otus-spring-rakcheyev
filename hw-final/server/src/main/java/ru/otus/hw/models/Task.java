@@ -22,6 +22,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -37,7 +38,7 @@ import java.util.List;
 @NamedEntityGraph(name = "task-teacher-group-entity-graph",
         attributeNodes = {
             @NamedAttributeNode("teacher"),
-            @NamedAttributeNode("teacher")
+            @NamedAttributeNode("group")
         })
 public class Task {
     @Id
@@ -50,36 +51,16 @@ public class Task {
     @Column(name = "info")
     private String info;
 
-    @Column(name = "target")
-    private String target;
-
-    @Column(name = "short_info")
-    private String shortInfo;
-
-    @Column(name = "result")
-    private String result;
-
     @Column(name = "start_at")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH.mm.ss")
     private LocalDateTime startAt;
 
     @JoinColumn(name = "teacher_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    private Teacher teacher;
+    private User teacher;
 
     @JoinColumn(name = "group_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Group group;
 
 }
-
-/*
- id bigserial,
-        name varchar(255),
-        info text,
-        target text,
-        short_info text,
-        result text,
-        start_at date,
-        teacher_id bigint references teachers (id) on delete set null,
-        group_id bigint references groups (id) on delete set null,
- */

@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TaskController {
 
-/*    private final TaskService taskService;
+    private final TaskService taskService;
 
     @GetMapping("/api/v1/task")
     public List<TaskInfoDto> getTasks() {
@@ -44,5 +44,5 @@ public class TaskController {
     @PutMapping("/api/v1/task")
     public TaskDto updateTask(@Valid @RequestBody TaskDto task) {
         return taskService.update(task);
-    }*/
+    }
 }

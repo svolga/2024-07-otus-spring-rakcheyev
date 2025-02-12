@@ -33,16 +33,22 @@ values ('Book1_comment1', 1),
        ('Book3_Comment3', 3)
 ;
 
-insert into courses(name, info)
+insert into courses(name, info, price)
 values ('Алгоритмы и структуры данных',
-        'Развивайте алгоритмическое мышление, увеличивайте производительность программ'),
+        'Развивайте алгоритмическое мышление, увеличивайте производительность программ',
+        120000),
        ('Golang Developer. Professional',
-        'От основ и внутреннего устройства Go – до создания микросервисов и взаимодействия с другими системами'),
-       ('Java Developer. Professional', 'Освойте создание современных Java-приложений'),
+        'От основ и внутреннего устройства Go – до создания микросервисов и взаимодействия с другими системами',
+        125000),
+       ('Java Developer. Professional',
+        'Освойте создание современных Java-приложений',
+        123000),
        ('Разработчик на Spring Framework',
-        'Освой востребованный фреймворк для создания приложений на Java, чтобы выйти на новый профессиональный уровень'),
+        'Освой востребованный фреймворк для создания приложений на Java, чтобы выйти на новый профессиональный уровень',
+        125000),
        ('Administrator Linux',
-        'Самый востребованный курс профессиональной переподготовки по Linux. Научитесь профессионально администрировать Linux');
+        'Самый востребованный курс профессиональной переподготовки по Linux. Научитесь профессионально администрировать Linux',
+        120000);
 
 
 insert into groups(name, info, start_at, end_at, course_id)
@@ -54,36 +60,71 @@ values ('Java Spring 2025-01-10', '', '2025-01-10', '2025-07-26', 4),
        ('Java 2025-07-03', '', '2025-07-03', '2025-02-15', 3);
 
 
-insert into teachers(nickname, first_name, last_name, middle_name, phone, email, info)
-values ('javadev', 'Иван', 'Иванов', 'Иванович', '+7(654) 345-67-90', 'ivan.iv@lotus.com',
-        'Java, Spring, React, Security'),
-       ('spring', 'Петр', 'Петров', 'Петрович', '+7(964) 659-45-87', 'petr.pt@lotus.com',
-        'Java, Spring, .NET, Angular'),
-       ('linux', 'Василий', 'Васильев', 'Васильевич', '+7(904) 563-89-99', 'vasyl.va@lotus.com',
-        'Linux, Ubuntu, Kubernetes, C++, Asm');
-
 
 insert into users(username, last_name, first_name, middle_name, email, phone, password, role)
-values ('user', 'Юзеров', 'Юзер', 'Юзерович', 'user@lotus.com', '+7(654) 345-67-90',  '$2y$10$sX2qt/F94.TkrBRntKT0luRPX6/Q3D8ti.GdKL.ePmYk6wgFV9rym', 'USER'),
-       ('admin', 'Админов', 'Админ', 'Админович', 'admin@lotus.com', '+7(964) 659-45-87',  '$2y$10$CkuUgG713P.J6uX/2J4QQOS3d78iZsCmNUBvPbv7sYGRb4UqOlzAm', 'ADMIN'),
-       ('ivanov', 'Иванов', 'Иван', 'Иванович', 'ivan.iv@lotus.com', '+7(904) 563-89-99', '$2y$10$sX2qt/F94.TkrBRntKT0luRPX6/Q3D8ti.GdKL.ePmYk6wgFV9rym', 'TEACHER'),
-       ('petrov', 'Петров', 'Петр', 'Петрович', 'petr.pt@lotus.com', '+7(984) 334-66-22', '$2y$10$sX2qt/F94.TkrBRntKT0luRPX6/Q3D8ti.GdKL.ePmYk6wgFV9rym', 'TEACHER'),
-       ('vasilyev', 'Васильев', 'Василий', 'Васильевич', 'vasyl.va@lotus.com', '+7(978) 234-56-34', '$2y$10$sX2qt/F94.TkrBRntKT0luRPX6/Q3D8ti.GdKL.ePmYk6wgFV9rym', 'TEACHER'),
-       ('student', 'Студентов', 'Студент', 'Студентович', 'student.st@lotus.com', '+7(956) 789-45-43', '$2y$10$sX2qt/F94.TkrBRntKT0luRPX6/Q3D8ti.GdKL.ePmYk6wgFV9rym', 'STUDENT'),
-       ('student2', 'Студентов2', 'Студент2', 'Студентович2', 'student2.st@lotus.com', '+7(935) 846-19-41', '$2y$10$sX2qt/F94.TkrBRntKT0luRPX6/Q3D8ti.GdKL.ePmYk6wgFV9rym', 'STUDENT');
+values ('admin', 'Админов', 'Админ', 'Админович', 'admin@lotus.com', '+7(964) 659-45-87',
+        '$2y$10$CkuUgG713P.J6uX/2J4QQOS3d78iZsCmNUBvPbv7sYGRb4UqOlzAm', 'ADMIN'),
+       ('student1', 'Студентов1', 'Студент1', 'Студентович', 'user@lotus.com', '+7(654) 345-67-90',
+        '$2y$10$sX2qt/F94.TkrBRntKT0luRPX6/Q3D8ti.GdKL.ePmYk6wgFV9rym', 'USER'),
+       ('ivanov', 'Иванов', 'Иван', 'Иванович', 'ivan.iv@lotus.com', '+7(904) 563-89-99',
+        '$2y$10$sX2qt/F94.TkrBRntKT0luRPX6/Q3D8ti.GdKL.ePmYk6wgFV9rym', 'TEACHER'),
+       ('petrov', 'Петров', 'Петр', 'Петрович', 'petr.pt@lotus.com', '+7(984) 334-66-22',
+        '$2y$10$sX2qt/F94.TkrBRntKT0luRPX6/Q3D8ti.GdKL.ePmYk6wgFV9rym', 'TEACHER'),
+       ('vasilyev', 'Васильев', 'Василий', 'Васильевич', 'vasyl.va@lotus.com', '+7(978) 234-56-34',
+        '$2y$10$sX2qt/F94.TkrBRntKT0luRPX6/Q3D8ti.GdKL.ePmYk6wgFV9rym', 'TEACHER'),
+       ('student2', 'Студентов2', 'Студент2', 'Студентович', 'student.st@lotus.com', '+7(956) 789-45-43',
+        '$2y$10$sX2qt/F94.TkrBRntKT0luRPX6/Q3D8ti.GdKL.ePmYk6wgFV9rym', 'STUDENT'),
+       ('student3', 'Студентов3', 'Студент3', 'Студентович3', 'student2.st@lotus.com', '+7(935) 846-19-41',
+        '$2y$10$sX2qt/F94.TkrBRntKT0luRPX6/Q3D8ti.GdKL.ePmYk6wgFV9rym', 'STUDENT');
+
+insert into teachers_profiles(user_id, info)
+values (3, 'Java, Spring, React, Security'),
+       (4, 'Java, Spring, .NET, Angular'),
+       (5, 'Linux, Ubuntu, Kubernetes, C++, Asm');
+
 
 insert into roles(role)
 values ('ADMIN'),
-       ('USER'),
-       ('MANAGER'),
        ('TEACHER'),
        ('STUDENT');
 
 insert into users_roles(user_id, role)
-values (1, 'USER'),
-       (2, 'ADMIN'),
+values (2, 'STUDENT'),
+       (1, 'ADMIN'),
        (3, 'TEACHER'),
        (4, 'TEACHER'),
        (5, 'TEACHER'),
        (6, 'STUDENT'),
        (7, 'STUDENT');
+
+
+insert into tasks(name, info, start_at, teacher_id, group_id)
+values ('Введение в Spring Framework',
+        'Spring Framework и его Spring Projects;
+          IoC в общем виде;
+          IoC-контейнер в Spring (контекст);
+          XML-контекст cо Spring Beans и DI между ними.',
+        parsedatetime('2025-01-25-20.00.00', 'yyyy-MM-dd-HH.mm.ss'),
+        3,
+        1)
+         ,
+       ('Конфигурирование Spring-приложений',
+        'Java-based конфигурацию контекста Spring;
+  Annotation-based конфигурацию контекста;
+  аннотация стереотипов, @Autowired и многие другие;
+  многослойная архитектура;
+  SpEL;
+  параметры конфигурации из .properties-файлов',
+        parsedatetime('2025-01-27-20.00.00', 'yyyy-MM-dd-HH.mm.ss'),
+        3,
+        1)
+       ,
+       ('Продвинутая конфигурация (часть 1) - Scopes, Lifecycle',
+        'Scopes (области видимости);
+  Lifecycle (жизненный цикл) бинов;
+  Также будут рассмотрены дополнительные возможности для конфигурирования приложений;',
+        parsedatetime('2025-01-30-20.00.00', 'yyyy-MM-dd-HH.mm.ss'),
+        3,
+        1)
+;
+

@@ -21,9 +21,6 @@ public class TaskDto {
     private String name;
 
     private String info;
-    private String target;
-    private String shortInfo;
-    private String result;
     private LocalDateTime startAt;
     private TeacherDto teacherDto;
     private GroupDto groupDto;

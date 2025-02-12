@@ -12,11 +12,13 @@ public interface CourseMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "info", target = "info")
+    @Mapping(source = "price", target = "price")
     CourseDto toDto(Course course);
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "info", target = "info")
+    @Mapping(source = "price", target = "price")
     Course toEntity(CourseDto course);
 
     List<CourseDto> toDtos(List<Course> courses);

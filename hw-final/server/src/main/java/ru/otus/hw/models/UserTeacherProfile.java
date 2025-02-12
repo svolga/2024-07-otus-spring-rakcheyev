@@ -2,9 +2,10 @@ package ru.otus.hw.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -20,19 +21,18 @@ import lombok.ToString;
 @Entity
 @EqualsAndHashCode
 @ToString
-@Table(name = "courses")
-public class Course {
+@Table(name = "teachers_profiles")
+public class UserTeacherProfile {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @Column(name = "user_id")
+    private Long userId;
 
-    @Column(name = "name", nullable = false, unique = true)
-    private String name;
-
-    @Column(name = "info", unique = true)
+    @Column(name = "info")
     private String info;
 
-    @Column(name = "price")
-    private int price;
-
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "user_id")
+    private User user;
 }
