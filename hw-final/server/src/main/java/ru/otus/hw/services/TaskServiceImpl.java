@@ -22,9 +22,7 @@ public class TaskServiceImpl implements TaskService {
     private final UserRepository userRepository;
     private final GroupRepository groupRepository;
     private final TaskRepository taskRepository;
-
     private final TaskMapper taskMapper;
-
 
     @Override
     @Transactional(readOnly = true)
@@ -65,7 +63,6 @@ public class TaskServiceImpl implements TaskService {
         validate(id);
         taskRepository.deleteById(id);
     }
-
 
     private void validate(long id) {
         var task = findById(id);

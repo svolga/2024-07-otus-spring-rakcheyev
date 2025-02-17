@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{views/fragment/head :: setHeader('Студенты')}"></head>
+<head th:insert="~{views/fragment/head :: setHeader('Лучшие оценки')}"></head>
 
-<body onload="showStudents()">
+<body onload="showReportBest()">
 
 <span th:replace="~{views/fragment/topmenu}"></span>
 
@@ -15,7 +15,7 @@
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
 
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">Список студентов</h1>
+                <h1 class="h2">Статистика успеваемости</h1>
             </div>
 
             <div class="table-responsive">
@@ -23,10 +23,8 @@
                     <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Username</th>
-                        <th>ФИО</th>
-                        <th>Телефон</th>
-                        <th>Email</th>
+                        <th>Студент</th>
+                        <th>Баллы</th>
                     </tr>
                     </thead>
                     <tbody id="table-items">

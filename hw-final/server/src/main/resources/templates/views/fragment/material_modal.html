@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+
+<head>
+</head>
+
+
+<div class="modal fade" id="formMaterial" tabindex="-1" role="dialog" aria-labelledby="materialModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-bottom-0">
+                <div>
+                <h5 class="modal-title" id="materialModalLabel"><i class="bi bi-link"></i> Добавить материал</h5>
+                    <h6 id = "nameMaterial" class="helpModal"></h6>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form>
+
+                <div class="modal-body">
+
+                    <div class="form-group" style="display: none">
+                        <label for="materialTaskId">ID:</label>
+                        <input id="materialTaskId" class="form-control" type="text" readonly="readonly" name="materialTaskId"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="materialName">Название</label>
+                        <input type="text" class="form-control" id="materialName" aria-describedby="nameHelp" placeholder="Название материала">
+                        <small id="nameHelp" class="form-text text-muted">Название</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="materialUrl">Url адрес</label>
+                        <input type="text" class="form-control" id="materialUrl" aria-describedby="urlHelp" placeholder="Укажите ссылку">
+                        <small id="materialUrlHelp" class="form-text text-muted">Ссылка на материал</small>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    <button type="button" class="btn btn-primary" onclick="saveMaterial();">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<body>
+</body>
+</html>

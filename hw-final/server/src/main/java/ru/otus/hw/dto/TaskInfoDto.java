@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Data
@@ -19,6 +20,8 @@ public class TaskInfoDto {
     private String name;
     private String info;
     private LocalDateTime startAt;
-    private String teacherName;
+    private String teacherFullName;
     private String groupName;
+    private String courseName;
+    private List<TaskMaterialDto> taskMaterialDtoList;
 }

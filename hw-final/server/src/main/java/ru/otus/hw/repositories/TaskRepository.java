@@ -10,10 +10,10 @@ import java.util.Optional;
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
     @Override
-    @EntityGraph("task-teacher-group-entity-graph")
+    @EntityGraph("task-teacher-group-materials-entity-graph")
     Optional<Task> findById(Long id);
 
     @Override
-    @EntityGraph("task-teacher-group-entity-graph")
+    @EntityGraph("task-teacher-group-materials-entity-graph")
     List<Task> findAll();
 }

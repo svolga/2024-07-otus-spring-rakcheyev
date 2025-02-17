@@ -1,3 +1,23 @@
+function getCurrentDateTime() {
+    return moment().format("YYYY-MM-DDThh:00:00");
+}
+
+function getInputText(elementId) {
+    return document.getElementById(elementId).value;
+}
+
+function numberFormat(num) {
+    return num.toLocaleString().replace(/,/g, " ");
+}
+
+function getDtoFromSelect(id){
+    const control = document.getElementById(id);
+    return {
+        id: control.value,
+        name: control.options[control.selectedIndex].text
+    };
+}
+
 // ******************************** Авторы ********************************
 function showAuthors() {
     console.log("showAuthors .................");
@@ -373,7 +393,7 @@ function outputCourses(courses) {
         row.innerHTML = `
             <td>${course.id}</td>
             <td>${course.name} <p><code>${course.info}</code></p></td>
-            <td>${course.price}</td>
+            <td>${numberFormat(course.price)}</td>
             <td><a href="/course/edit?id=${course.id}">Изменить</a></td>
             <td><button onclick="deleteCourse(${course.id})" class="link">Удалить</button></td>
         `;
@@ -501,15 +521,6 @@ function outputGroups(groups) {
     });
 }
 
-function convertDate(inputFormat) {
-    function pad(s) {
-        return (s < 10) ? '0' + s : s;
-    }
-
-    var d = new Date(inputFormat)
-    return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join('.')
-}
-
 function loadGroup() {
 
     comboCourses();
@@ -604,6 +615,7 @@ function saveGroup() {
 }
 
 // ************************************** Преподаватели *******************************
+
 function showTeachers() {
     console.log("showTeachers .................");
     fetch('/api/v1/teacher')
@@ -674,10 +686,6 @@ function loadTeacher() {
             document.getElementById('info-input').value = teacher.profileInfo;
         })
         .catch(error => console.error("Ошибка загрузки преподавателя по id ", error));
-}
-
-function getInputText(elementId) {
-    return document.getElementById(elementId).value;
 }
 
 
@@ -762,7 +770,7 @@ function outputUsers(users) {
             <td>${user.username}</td>
             <td>${user.fullName}</td>
             <td>
-            <h5><span class="badge bg-warning">${user.roleTitles}</span></h5>
+            <h6><span class="badge bg-info">${user.roleTitles}</span></h6>
             </td>
             <td>${user.phone == null ? '' : user.phone}</td>
             <td>${user.email}</td>                        
@@ -821,9 +829,6 @@ function loadUser() {
         .catch(error => console.error("Ошибка загрузки преподавателя по id ", error));
 }
 
-function getInputText(elementId) {
-    return document.getElementById(elementId).value;
-}
 
 function saveUser() {
     console.log('saveUser ................');
@@ -951,7 +956,6 @@ function outputStudents(students) {
             <td>${student.fullName}</td>
             <td>${student.phone == null ? '' : student.phone}</td>
             <td>${student.email}</td>                        
-            <td><a href="/student/edit?id=${student.id}">Изменить</a></td>
         `;
         table.append(row);
     });
@@ -994,9 +998,6 @@ function loadStudent() {
         .catch(error => console.error("Ошибка загрузки студента по id ", error));
 }
 
-function getInputText(elementId) {
-    return document.getElementById(elementId).value;
-}
 
 function saveStudent() {
     console.log('saveStudent ................');
@@ -1046,5 +1047,703 @@ function saveStudent() {
         .catch(error => {
             console.log("Fetch ошибка сохранения студента", error)
         });
+}
+
+
+// ************************************** Занятия *******************************
+function showTasks() {
+    console.log("showTasks .................");
+    fetch('/api/v1/task')
+        .then(response => response.json())
+        .then(json => outputTasks(json))
+        .catch(error => console.error("Ошибка чтения занятий ", error));
+}
+
+function comboTasks() {
+    console.log("comboTask .................");
+    fetch('/api/v1/task')
+        .then(response => response.json())
+        .then(json => outputComboTasks(json))
+        .catch(error => console.error("Ошибка чтения занятий ", error));
+}
+
+function outputComboTasks(tasks) {
+    console.log("outputComboTasks", tasks);
+    let select = document.getElementById("taskId");
+
+    tasks.forEach(task => {
+        let option = document.createElement("option");
+        option.value = task.id;
+        option.text = task.name;
+        select.append(option);
+    });
+}
+
+function outputTasks(tasks) {
+    console.log("outputTasks", tasks);
+    let table = document.getElementById("table-items");
+    tasks.forEach(task => {
+        let row = document.createElement("tr");
+        row.setAttribute("id", task.id);
+
+        row.innerHTML = `
+            <td>${task.id}</td>
+            <td>${task.name}</td>
+            <td>${task.info}
+            
+            <div id = "taskMaterials${task.id}" class = "taskMaterials"></div>
+            
+            </td>
+            <td>${task.startAt == null ? '' : task.startAt}</td>
+            <td>${task.teacherFullName}</td>
+            <td>${task.groupName}</td>
+            <td><b>${task.courseName}</b></td>
+            <td><a href="/task/edit?id=${task.id}">Изменить</a></td>
+            <td><button onclick="deleteTask(${task.id})" class="link">Удалить</button></td>
+        `;
+        table.append(row);
+
+        outputTaskMaterials(task, task.taskMaterialDtoList);
+
+    });
+}
+
+function deleteTaskMaterial(id) {
+
+    console.log('remove task material', id);
+
+    let divId = `taskMaterial${id}`;
+    console.log('remove task material divId', divId);
+
+    fetch(`api/v1/task-material/${id}`, {
+        method: 'DELETE',
+    })
+        .then(() => {
+            console.log(`removed taskMaterial ${id}`);
+            document.getElementById(divId).remove();
+        })
+        .catch(error => console.error("Ошибка удаления taskMaterial ", error));
+}
+
+
+function saveMaterial() {
+    console.log('Сохранение материала');
+
+    const taskMaterial = {
+        taskId: document.getElementById("materialTaskId").value,
+        name: document.getElementById("materialName").value,
+        url: document.getElementById("materialUrl").value
+    };
+
+    fetch("/api/v1/task-material", {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(taskMaterial)
+    })
+        .then(response => {
+            if (response.ok) {
+                console.log('response', response);
+                $('#formMaterial').modal('hide');
+            }
+            return response;
+        })
+        .then(response => response.json())
+        .then((taskMaterialDto) => {
+            outputTaskMaterial(taskMaterialDto);
+        })
+        .catch(error => {
+            console.log("Fetch ошибка сохранения материала", error)
+        });
+}
+
+
+// При открытии модального окна с добавлением материалов
+$(document).on('show.bs.modal', '#formMaterial', function (event) {
+    console.log('show.bs.modal .........................................................');
+    var button = $(event.relatedTarget); // Button that triggered the modal
+    var taskName = button.data('taskname'); // Extract info from data-* attributes
+    var taskId = button.data('taskid'); // Extract info from data-* attributes
+    document.getElementById("nameMaterial").innerHTML = taskName;
+    document.getElementById("materialTaskId").value = taskId;
+
+    document.getElementById("materialName").value = '';
+    document.getElementById("materialUrl").value = '';
+
+})
+
+function getTaskMaterialsContainer(taskId) {
+    return document.getElementById(`taskMaterials${taskId}`);
+}
+
+function outputTaskMaterials(task, taskMaterialDtoList) {
+
+    var taskMaterialsContainer = getTaskMaterialsContainer(task.id);
+
+    console.log('task ...........', task);
+
+    taskMaterialsContainer.innerHTML = `<div><a href="#"  
+        data-toggle="modal" 
+        data-target="#formMaterial" 
+        data-taskid="${task.id}" 
+        data-taskname="${task.name}"><i class="bi bi-plus"></i> Добавить материал</a></div>`;
+
+    for (let i = 0; i < taskMaterialDtoList.length; i++) {
+        outputTaskMaterial(taskMaterialDtoList[i]);
+    }
+}
+
+function outputTaskMaterial(taskMaterialDto) {
+
+    var taskMaterialsContainer = getTaskMaterialsContainer(taskMaterialDto.taskId);
+    var id = taskMaterialDto.id;
+    let div = document.createElement("div");
+    div.id = `taskMaterial${id}`;
+    div.innerHTML = `<a href="#" onclick="deleteTaskMaterial(${id}); return false;"><i class="bi bi-x"></i></a>
+            <a href="${taskMaterialDto.url}" target="_blank">${taskMaterialDto.name}</a>`;
+
+    taskMaterialsContainer.append(div);
+}
+
+function loadTask() {
+
+    comboTeachers();
+    comboGroups();
+
+    const id = document.getElementById("id-input").value;
+    console.log("Загрузка занятия c id --> ", id);
+    if (!id) {
+        document.getElementById('start-input').value = getCurrentDateTime();
+        return;
+    }
+
+    fetch(`/api/v1/task/${id}`, {
+        method: "GET",
+    })
+        .then(response => response.json())
+        .then(task => {
+            console.log('Получено занятие', task);
+            document.getElementById('name-input').value = task.name;
+            document.getElementById('info-input').value = task.info;
+            document.getElementById('start-input').value = task.startAt ?? getCurrentDateTime();
+            document.getElementById("groupId").value = task.groupDto == null ? 0 : task.groupDto.id;
+            document.getElementById("teacherId").value = task.teacherDto == null ? 0 : task.teacherDto.id;
+        })
+        .catch(error => console.error("Ошибка загрузки занятия по id ", error));
+}
+
+function deleteTask(id) {
+    console.log('deleteTask ....................', id);
+    fetch(`api/v1/task/${id}`, {
+        method: 'DELETE',
+    })
+        .then(() => {
+            console.log(`removed task ${id}`);
+            document.getElementById(id).remove();
+        })
+        .catch(error => console.error("Ошибка удаления занятия ", error));
+}
+
+function saveTask() {
+    console.log('saveTask ................');
+
+    const id = document.getElementById("id-input").value;
+
+    const teacher = document.getElementById("teacherId");
+    const teacherDto = {
+        id: teacher.value,
+        name: teacher.options[teacher.selectedIndex].text
+    };
+
+    const group = document.getElementById("groupId");
+    const groupDto = {
+        id: group.value,
+        name: group.options[group.selectedIndex].text
+    };
+
+    const method = id ? "PUT" : "POST";
+
+    const task = {
+        id: id,
+        name: document.getElementById("name-input").value,
+        info: document.getElementById("info-input").value,
+        teacherDto: teacherDto,
+        groupDto: groupDto,
+        startAt: document.getElementById("start-input").value,
+    };
+
+    console.log('save task', task);
+
+    fetch("/api/v1/task", {
+        method: method,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(task)
+    })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = "/task";
+                return false;
+            }
+            return response;
+        })
+        .then(response => response.json())
+        .then((response) => {
+            errorInfo(response);
+        })
+        .catch(error => {
+            console.log("Fetch ошибка сохранения занятия", error)
+        });
+}
+
+
+// ************************************** ДЗ *******************************
+function showHomeworks() {
+    console.log("showHomeworks .................");
+    fetch('/api/v1/homework')
+        .then(response => response.json())
+        .then(json => outputHomeworks(json))
+        .catch(error => console.error("Ошибка чтения ДЗ ", error));
+}
+
+function comboHomeworks() {
+    console.log("comboHomework .................");
+    fetch('/api/v1/homework')
+        .then(response => response.json())
+        .then(json => outputComboHomeworks(json))
+        .catch(error => console.error("Ошибка чтения ДЗ ", error));
+}
+
+function outputComboHomeworks(homeworks) {
+    console.log("outputComboHomeworks", homeworks);
+    let select = document.getElementById("homeworkId");
+
+    homeworks.forEach(homework => {
+        let option = document.createElement("option");
+        option.value = homework.id;
+        option.text = homework.name;
+        select.append(option);
+    });
+}
+
+function outputHomeworks(homeworks) {
+    console.log("outputHomeworks", homeworks);
+    let table = document.getElementById("table-items");
+    homeworks.forEach(homework => {
+        let row = document.createElement("tr");
+        row.setAttribute("id", homework.id);
+
+        row.innerHTML = `
+            <td>${homework.id}</td>
+            <td>${homework.name} <p><code>${homework.info}</code></p></td>
+            <td>${homework.taskName}</td>
+            <td>${homework.groupName}</td>
+            <td>${homework.courseName}</td>
+            <td>${homework.mark}</td>
+            <td><a href="/homework/edit?id=${homework.id}">Изменить</a></td>
+            <td><button onclick="deleteHomework(${homework.id})" class="link">Удалить</button></td>
+        `;
+        table.append(row);
+    });
+}
+
+function loadHomework() {
+
+    comboTasks();
+
+    const id = document.getElementById("id-input").value;
+    console.log("Загрузка ДЗ c id --> ", id);
+    if (!id) {
+        return;
+    }
+
+    fetch(`/api/v1/homework/${id}`, {
+        method: "GET",
+    })
+        .then(response => response.json())
+        .then(homework => {
+            console.log('Получено ДЗ', homework);
+
+            document.getElementById('name-input').value = homework.name;
+            document.getElementById('info-input').value = homework.info;
+            document.getElementById('mark-input').value = homework.mark;
+            document.getElementById("taskId").value = homework.taskDto == null ? 0 : homework.taskDto.id;
+
+        })
+        .catch(error => console.error("Ошибка загрузки ДЗ по id ", error));
+}
+
+function deleteHomework(id) {
+    console.log('deleteHomework ....................', id);
+    fetch(`api/v1/homework/${id}`, {
+        method: 'DELETE',
+    })
+        .then(() => {
+            console.log(`removed homework ${id}`);
+            document.getElementById(id).remove();
+        })
+        .catch(error => console.error("Ошибка удаления ДЗ ", error));
+}
+
+function saveHomework() {
+    console.log('saveHomework ................');
+
+    const id = document.getElementById("id-input").value;
+    const name = document.getElementById("name-input").value;
+    const info = document.getElementById("info-input").value;
+    const mark = document.getElementById("mark-input").value;
+
+    const task = document.getElementById("taskId");
+    const taskDto = {
+        id: task.value,
+        name: task.options[task.selectedIndex].text
+    };
+
+    console.log('taskDto', taskDto);
+
+    const method = id ? "PUT" : "POST";
+
+    const homework = {
+        id: id,
+        name: name,
+        info: info,
+        mark: mark,
+        taskDto: taskDto,
+    };
+
+    console.log('save homework', homework);
+
+    fetch("/api/v1/homework", {
+        method: method,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(homework)
+    })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = "/homework";
+                return false;
+            }
+            return response;
+        })
+        .then(response => response.json())
+        .then((response) => {
+            errorInfo(response);
+        })
+        .catch(error => {
+            console.log("Fetch ошибка сохранения ДЗ", error)
+        });
+}
+
+
+// ************************************** Статусы ДЗ *******************************
+function showRanks() {
+    console.log("showRanks .................");
+    fetch('/api/v1/rank')
+        .then(response => response.json())
+        .then(json => outputRanks(json))
+        .catch(error => console.error("Ошибка чтения статуса ", error));
+}
+
+function comboRanks() {
+    console.log("comboRank .................");
+    fetch('/api/v1/rank')
+        .then(response => response.json())
+        .then(json => outputComboRanks(json))
+        .catch(error => console.error("Ошибка чтения статуса ", error));
+}
+
+function outputComboRanks(ranks) {
+    console.log("outputComboRanks", ranks);
+    let select = document.getElementById("rankId");
+
+    ranks.forEach(rank => {
+        let option = document.createElement("option");
+        option.value = rank.id;
+        option.text = rank.name;
+        select.append(option);
+    });
+}
+
+function outputRanks(ranks) {
+    console.log("outputRanks", ranks);
+    let table = document.getElementById("table-items");
+    ranks.forEach(rank => {
+        let row = document.createElement("tr");
+        row.setAttribute("id", rank.id);
+        row.innerHTML = `
+            <td>${rank.id}</td>
+            <td>${rank.ukey}</td>            
+            <td style="background-color: ${rank.color}">${rank.name}</td>
+            <td style="background-color: ${rank.color}">${rank.color}</td>
+            <td><a href="/rank/edit?id=${rank.id}">Изменить</a></td>
+            <td><button onclick="deleteRank(${rank.id})" class="link">Удалить</button></td>
+        `;
+        table.append(row);
+    });
+}
+
+function loadRank() {
+
+    const id = document.getElementById("id-input").value;
+    console.log("Загрузка статуса c id --> ", id);
+    if (!id) {
+        return;
+    }
+
+    fetch(`/api/v1/rank/${id}`, {
+        method: "GET",
+    })
+        .then(response => response.json())
+        .then(rank => {
+            console.log('Получен курс', rank);
+            document.getElementById('name-input').value = rank.name;
+            document.getElementById('ukey-input').value = rank.ukey;
+            document.getElementById('color-input').value = rank.color;
+        })
+        .catch(error => console.error("Ошибка загрузки статуса по id ", error));
+}
+
+function deleteRank(id) {
+    console.log('deleteRank ....................', id);
+    fetch(`api/v1/rank/${id}`, {
+        method: 'DELETE',
+    })
+        .then(() => {
+            console.log(`removed rank ${id}`);
+            document.getElementById(id).remove();
+        })
+        .catch(error => console.error("Ошибка удаления курса ", error));
+}
+
+function saveRank() {
+    console.log('saveRank ................');
+
+    const id = getInputText("id-input");
+    const method = id ? "PUT" : "POST";
+
+    const rank = {
+        id: id,
+        name: getInputText("name-input"),
+        ukey: getInputText("ukey-input"),
+        color: getInputText("color-input")
+    };
+
+    fetch("/api/v1/rank", {
+        method: method,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(rank)
+    })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = "/rank";
+                return false;
+            }
+            return response;
+        })
+        .then(response => response.json())
+        .then((response) => {
+            errorInfo(response);
+        })
+        .catch(error => {
+            console.log("Fetch ошибка сохранения статуса", error)
+        });
+}
+
+
+// ************************************** Ведомость ДЗ *******************************
+function showResults() {
+    console.log("showResults .................");
+    fetch('/api/v1/result')
+        .then(response => response.json())
+        .then(json => outputResults(json))
+        .catch(error => console.error("Ошибка чтения ведомости ", error));
+}
+
+function comboResults() {
+    console.log("comboResult .................");
+    fetch('/api/v1/result')
+        .then(response => response.json())
+        .then(json => outputComboResults(json))
+        .catch(error => console.error("Ошибка чтения ведомости ", error));
+}
+
+function outputComboResults(results) {
+    console.log("outputComboResults", results);
+    let select = document.getElementById("resultId");
+
+    results.forEach(result => {
+        let option = document.createElement("option");
+        option.value = result.id;
+        option.text = result.name;
+        select.append(option);
+    });
+}
+
+function outputResults(results) {
+    console.log("outputResults", results);
+    let table = document.getElementById("table-items");
+    results.forEach(result => {
+        let row = document.createElement("tr");
+        row.setAttribute("id", result.id);
+
+        row.innerHTML = `
+            <td style="background-color: ${result.rankColor}">${result.id}</td>
+            <td style="background-color: ${result.rankColor}">${result.homeworkName}</td>
+            <td style="background-color: ${result.rankColor}">${result.studentFullName}</td>
+            <td style="background-color: ${result.rankColor}">${result.rankName}</td>
+            <td style="background-color: ${result.rankColor}">${result.step}</td>
+            <td style="background-color: ${result.rankColor}">${result.score}</td>
+            <td><a href="/result/edit?id=${result.id}">Изменить</a></td>
+            <td><button onclick="deleteResult(${result.id})" class="link">Удалить</button></td>
+        `;
+        table.append(row);
+    });
+}
+
+
+function loadResult() {
+
+    comboStudents();
+    comboHomeworks();
+    comboRanks();
+
+    const id = document.getElementById("id-input").value;
+    console.log("Загрузка результата c id --> ", id);
+    if (!id) {
+        return;
+    }
+
+    fetch(`/api/v1/result/${id}`, {
+        method: "GET",
+    })
+        .then(response => response.json())
+        .then(result => {
+            console.log('Получена результат по ДЗ', result);
+            document.getElementById("rankId").value = result.rankDto == null ? 0 : result.rankDto.id;
+            document.getElementById("studentId").value = result.studentDto == null ? 0 : result.studentDto.id;
+            document.getElementById("homeworkId").value = result.homeworkDto == null ? 0 : result.homeworkDto.id;
+            document.getElementById('score-input').value = result.score;
+            document.getElementById('step-input').value = result.step;
+
+        })
+        .catch(error => console.error("Ошибка загрузки результата по id ", error));
+}
+
+function deleteResult(id) {
+    console.log('deleteResult ....................', id);
+    fetch(`api/v1/result/${id}`, {
+        method: 'DELETE',
+    })
+        .then(() => {
+            console.log(`removed result ${id}`);
+            document.getElementById(id).remove();
+        })
+        .catch(error => console.error("Ошибка удаления результата ", error));
+}
+
+
+function saveResult() {
+    console.log('saveResult ................');
+
+    const id = document.getElementById("id-input").value;
+    const method = id ? "PUT" : "POST";
+
+    const result = {
+        id: id,
+        step: getInputText("step-input"),
+        score: getInputText("score-input"),
+ 	    rankDto: getDtoFromSelect("rankId"),
+        studentDto:  getDtoFromSelect("studentId"),
+		homeworkDto: getDtoFromSelect("homeworkId")
+    };
+
+    console.log('save result', result);
+
+    fetch("/api/v1/result", {
+        method: method,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(result)
+    })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = "/result";
+                return false;
+            }
+            return response;
+        })
+        .then(response => response.json())
+        .then((response) => {
+            errorInfo(response);
+        })
+        .catch(error => {
+            console.log("Fetch ошибка сохранения результата", error)
+        });
+}
+
+//*********************************************** Отчеты ****************************************************
+function showReportBest() {
+    console.log("showReportBest results .................");
+    fetch('/api/v1/best')
+        .then(response => response.json())
+        .then(json => outputReportBest(json))
+        .catch(error => console.error("Ошибка чтения отчета с лучшими оценками ", error));
+}
+
+
+function outputReportBest(datas) {
+    console.log("outputReportBest", datas);
+    let table = document.getElementById("table-items");
+    datas.forEach(data => {
+        let row = document.createElement("tr");
+
+        row.setAttribute("id", data.id);
+        row.innerHTML = `
+            <td>${data.userId}</td>
+            <td>${data.fullName}</td>
+            <td>${data.score}</td>
+        `;
+        table.append(row);
+    });
+}
+
+
+function showReportMiddle() {
+    console.log("showReportBest results .................");
+    fetch('/api/v1/middle')
+        .then(response => response.json())
+        .then(json => outputReportMiddle(json))
+        .catch(error => console.error("Ошибка чтения отчета с лучшими оценками ", error));
+}
+
+
+function outputReportMiddle(datas) {
+    console.log("outputReportBest", datas);
+    let table = document.getElementById("table-items");
+    datas.forEach(data => {
+        let row = document.createElement("tr");
+
+		var score = data.score.toFixed(2);
+
+        row.setAttribute("id", data.id);
+        row.innerHTML = `
+            <td>${data.userId}</td>
+            <td>${data.fullName}</td>
+            <td>${score}</td>
+        `;
+        table.append(row);
+    });
 }
 

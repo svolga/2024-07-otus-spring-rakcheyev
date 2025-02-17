@@ -182,3 +182,8 @@ button.link:focus {
 .l-5{
     padding-left: 35px !important;
 }
+
+
+.helpModal{
+    margin-top: 15px;
+}

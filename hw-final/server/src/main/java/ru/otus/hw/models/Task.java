@@ -8,11 +8,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedAttributeNode;
 import jakarta.persistence.NamedEntityGraph;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,6 +24,7 @@ import org.hibernate.annotations.FetchMode;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -35,10 +35,11 @@ import java.util.List;
 @Entity
 @Builder
 @Table(name = "tasks")
-@NamedEntityGraph(name = "task-teacher-group-entity-graph",
+@NamedEntityGraph(name = "task-teacher-group-materials-entity-graph",
         attributeNodes = {
             @NamedAttributeNode("teacher"),
-            @NamedAttributeNode("group")
+            @NamedAttributeNode("group"),
+            @NamedAttributeNode("taskMaterials")
         })
 public class Task {
     @Id
@@ -62,5 +63,9 @@ public class Task {
     @JoinColumn(name = "group_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Group group;
+
+    @Fetch(FetchMode.SUBSELECT)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "task", orphanRemoval = true)
+    private List<TaskMaterial> taskMaterials = new ArrayList<>();
 
 }

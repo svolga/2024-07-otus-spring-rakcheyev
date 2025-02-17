@@ -107,7 +107,7 @@ values ('Введение в Spring Framework',
         parsedatetime('2025-01-25-20.00.00', 'yyyy-MM-dd-HH.mm.ss'),
         3,
         1)
-         ,
+        ,
        ('Конфигурирование Spring-приложений',
         'Java-based конфигурацию контекста Spring;
   Annotation-based конфигурацию контекста;
@@ -118,7 +118,7 @@ values ('Введение в Spring Framework',
         parsedatetime('2025-01-27-20.00.00', 'yyyy-MM-dd-HH.mm.ss'),
         3,
         1)
-       ,
+        ,
        ('Продвинутая конфигурация (часть 1) - Scopes, Lifecycle',
         'Scopes (области видимости);
   Lifecycle (жизненный цикл) бинов;
@@ -127,4 +127,40 @@ values ('Введение в Spring Framework',
         3,
         1)
 ;
+
+insert into tasks_materials(task_id, name, url)
+values (1, 'Материалы otus', 'https://www.otus.ru'),
+       (1, 'Документация по Spring', 'https://spring.io/'),
+       (1, 'Примеры geeksforgeeks', 'https://www.geeksforgeeks.org/spring/'),
+       (1, 'Вопросы-ответы Stackoverflow',
+        'https://stackoverflow.com/questions/11840709/how-to-add-help-text-above-input-rather-than-below-it-in-twitter-bootstrap'),
+       (2, 'Документация Hibernate',
+        'https://docs.jboss.org/hibernate/orm/5.6/userguide/html_single/Hibernate_User_Guide.html#associations-one-to-many-unidirectional'),
+       (2, 'Примеры проектов Spring', 'https://github.com/spring-projects/spring-boot');
+
+
+insert into homeworks(task_id, name, info, mark)
+values (1, 'ДЗ__1 по Spring', 'Решить ДЗ__1', 10),
+       (2, 'ДЗ__2 по Spring', 'Решить ДЗ__2', 10),
+       (3, 'ДЗ__3 по Spring', 'Решить ДЗ__3', 10);
+
+
+insert into ranks(ukey, name, color)
+values ('IN_PROCESS', 'В процессе', 'Khaki'),
+       ('DONE', 'Сдано', 'Chartreuse'),
+       ('FAILED', 'Не сдано', 'LightSalmon');
+
+
+insert into results(user_id, rank_id, homework_id, step, score)
+values (2, 2, 1, 2, 7),
+       (2, 2, 2, 3, 8),
+       (2, 2, 3, 2, 9),
+
+       (6, 2, 1, 1, 8),
+       (6, 2, 2, 1, 9),
+       (6, 1, 3, 2, 0),
+
+       (7, 2, 1, 4, 7),
+       (7, 1, 2, 2, 0);
+
 
