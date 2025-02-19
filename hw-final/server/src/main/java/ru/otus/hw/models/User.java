@@ -64,9 +64,6 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "role")
-    private String role;
-
     @Fetch(FetchMode.SUBSELECT)
     @ManyToMany(targetEntity = Role.class, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"),

@@ -1481,7 +1481,7 @@ function outputRanks(ranks) {
             <td>${rank.id}</td>
             <td>${rank.ukey}</td>            
             <td style="background-color: ${rank.color}">${rank.name}</td>
-            <td style="background-color: ${rank.color}">${rank.color}</td>
+            <td>${rank.color}</td>
             <td><a href="/rank/edit?id=${rank.id}">Изменить</a></td>
             <td><button onclick="deleteRank(${rank.id})" class="link">Удалить</button></td>
         `;

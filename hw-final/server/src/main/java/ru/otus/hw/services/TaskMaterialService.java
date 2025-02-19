@@ -1,9 +1,6 @@
 package ru.otus.hw.services;
 
-import ru.otus.hw.dto.TaskDto;
 import ru.otus.hw.dto.TaskMaterialDto;
-
-import java.util.List;
 
 public interface TaskMaterialService {
 

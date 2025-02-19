@@ -61,21 +61,21 @@ values ('Java Spring 2025-01-10', '', '2025-01-10', '2025-07-26', 4),
 
 
 
-insert into users(username, last_name, first_name, middle_name, email, phone, password, role)
+insert into users(username, last_name, first_name, middle_name, email, phone, password)
 values ('admin', 'Админов', 'Админ', 'Админович', 'admin@lotus.com', '+7(964) 659-45-87',
-        '$2y$10$CkuUgG713P.J6uX/2J4QQOS3d78iZsCmNUBvPbv7sYGRb4UqOlzAm', 'ADMIN'),
+        '$2y$10$CkuUgG713P.J6uX/2J4QQOS3d78iZsCmNUBvPbv7sYGRb4UqOlzAm'),
        ('student1', 'Студентов1', 'Студент1', 'Студентович', 'user@lotus.com', '+7(654) 345-67-90',
-        '$2y$10$sX2qt/F94.TkrBRntKT0luRPX6/Q3D8ti.GdKL.ePmYk6wgFV9rym', 'USER'),
+        '$2y$10$sX2qt/F94.TkrBRntKT0luRPX6/Q3D8ti.GdKL.ePmYk6wgFV9rym'),
        ('ivanov', 'Иванов', 'Иван', 'Иванович', 'ivan.iv@lotus.com', '+7(904) 563-89-99',
-        '$2y$10$sX2qt/F94.TkrBRntKT0luRPX6/Q3D8ti.GdKL.ePmYk6wgFV9rym', 'TEACHER'),
+        '$2y$10$sX2qt/F94.TkrBRntKT0luRPX6/Q3D8ti.GdKL.ePmYk6wgFV9rym'),
        ('petrov', 'Петров', 'Петр', 'Петрович', 'petr.pt@lotus.com', '+7(984) 334-66-22',
-        '$2y$10$sX2qt/F94.TkrBRntKT0luRPX6/Q3D8ti.GdKL.ePmYk6wgFV9rym', 'TEACHER'),
+        '$2y$10$sX2qt/F94.TkrBRntKT0luRPX6/Q3D8ti.GdKL.ePmYk6wgFV9rym'),
        ('vasilyev', 'Васильев', 'Василий', 'Васильевич', 'vasyl.va@lotus.com', '+7(978) 234-56-34',
-        '$2y$10$sX2qt/F94.TkrBRntKT0luRPX6/Q3D8ti.GdKL.ePmYk6wgFV9rym', 'TEACHER'),
+        '$2y$10$sX2qt/F94.TkrBRntKT0luRPX6/Q3D8ti.GdKL.ePmYk6wgFV9rym'),
        ('student2', 'Студентов2', 'Студент2', 'Студентович', 'student.st@lotus.com', '+7(956) 789-45-43',
-        '$2y$10$sX2qt/F94.TkrBRntKT0luRPX6/Q3D8ti.GdKL.ePmYk6wgFV9rym', 'STUDENT'),
+        '$2y$10$sX2qt/F94.TkrBRntKT0luRPX6/Q3D8ti.GdKL.ePmYk6wgFV9rym'),
        ('student3', 'Студентов3', 'Студент3', 'Студентович3', 'student2.st@lotus.com', '+7(935) 846-19-41',
-        '$2y$10$sX2qt/F94.TkrBRntKT0luRPX6/Q3D8ti.GdKL.ePmYk6wgFV9rym', 'STUDENT');
+        '$2y$10$sX2qt/F94.TkrBRntKT0luRPX6/Q3D8ti.GdKL.ePmYk6wgFV9rym');
 
 insert into teachers_profiles(user_id, info)
 values (3, 'Java, Spring, React, Security'),

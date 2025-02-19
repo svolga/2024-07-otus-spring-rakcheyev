@@ -65,7 +65,6 @@ create table users
     last_name   varchar(255),
     email       varchar(64),
     phone       varchar(32),
-    role        varchar(255),
     primary key (id)
 );
 

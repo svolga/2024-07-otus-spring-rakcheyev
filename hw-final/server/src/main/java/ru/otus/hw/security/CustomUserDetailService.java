@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ru.otus.hw.models.Role;
 import ru.otus.hw.models.User;
 import ru.otus.hw.repositories.UserRepository;
 
@@ -20,11 +21,15 @@ public class CustomUserDetailService implements UserDetailsService {
                 .orElseThrow(() ->
                         new UsernameNotFoundException(String.format("User not found: %s", username))
                 );
+
         return org.springframework.security.core.userdetails.User
                 .builder()
                 .username(user.getUsername())
                 .password(user.getPassword())
-                .roles(user.getRole())
+                .roles(user.getRoles()
+                        .stream()
+                        .map(Role::getRole)
+                        .toArray(String[]::new))
                 .build();
     }
 }
