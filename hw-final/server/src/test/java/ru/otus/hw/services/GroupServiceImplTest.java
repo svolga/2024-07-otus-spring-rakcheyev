@@ -11,9 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw.dto.CourseDto;
 import ru.otus.hw.dto.GroupDto;
 import ru.otus.hw.dto.GroupInfoDto;
-import ru.otus.hw.mappers.AuthorMapperImpl;
 import ru.otus.hw.mappers.GroupMapperImpl;
-import ru.otus.hw.mappers.GenreMapperImpl;
 
 import java.time.LocalDate;
 
@@ -24,7 +22,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 @DataJpaTest
 @Transactional(propagation = Propagation.NEVER)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@Import({GroupServiceImpl.class, GroupMapperImpl.class, AuthorMapperImpl.class, GenreMapperImpl.class})
+@Import({GroupServiceImpl.class, GroupMapperImpl.class})
 public class GroupServiceImplTest {
 
     private static final int EXPECTED_NUMBER_OF_GROUPS = 6;
