@@ -9,9 +9,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw.dto.CourseDto;
-import ru.otus.hw.mappers.AuthorMapperImpl;
 import ru.otus.hw.mappers.CourseMapperImpl;
-import ru.otus.hw.mappers.GenreMapperImpl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -20,7 +18,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 @DataJpaTest
 @Transactional(propagation = Propagation.NEVER)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@Import({CourseServiceImpl.class, CourseMapperImpl.class, AuthorMapperImpl.class, GenreMapperImpl.class})
+@Import({CourseServiceImpl.class, CourseMapperImpl.class})
 public class CourseServiceImplTest {
 
     private static final int EXPECTED_NUMBER_OF_COURSES = 5;

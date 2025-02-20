@@ -9,7 +9,7 @@ public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
         System.out.printf(
-                "Пользователи user: user, admin: admin %n%s%n %n%s%n",
+                "Пользователи admin: admin %n%s%n %n%s%n",
                 "Чтобы перейти на страницу сайта открывай: ",
                 "http://localhost:8080"
         );

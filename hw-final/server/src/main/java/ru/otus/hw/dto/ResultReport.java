@@ -1,6 +1,6 @@
 package ru.otus.hw.dto;
 
-public interface ResultReportDto {
+public interface ResultReport {
     Long getUserId();
     Double getScore();
     String getFullName();

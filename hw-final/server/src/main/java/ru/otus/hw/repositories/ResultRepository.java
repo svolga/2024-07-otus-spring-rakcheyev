@@ -3,7 +3,7 @@ package ru.otus.hw.repositories;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import ru.otus.hw.dto.ResultReportDto;
+import ru.otus.hw.dto.ResultReport;
 import ru.otus.hw.models.Result;
 
 import java.util.List;
@@ -27,7 +27,7 @@ public interface ResultRepository extends JpaRepository<Result, Long> {
             "group by r.user_id " +
             "order by score desc",
             nativeQuery = true)
-    List<ResultReportDto> getBestResults();
+    List<ResultReport> getBestResults();
 
     @Query(value = "" +
             "select r.user_id as userId, concat(u.last_name, ' ', u.first_name, ' ', u.middle_name)  as fullName, " +
@@ -37,6 +37,6 @@ public interface ResultRepository extends JpaRepository<Result, Long> {
             "group by r.user_id " +
             "order by score desc",
             nativeQuery = true)
-    List<ResultReportDto> getMiddleScoreResults();
+    List<ResultReport> getMiddleScoreResults();
 
 }

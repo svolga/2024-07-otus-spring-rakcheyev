@@ -1,10 +1,10 @@
 package ru.otus.hw.services;
 
-import ru.otus.hw.dto.ResultReportDto;
+import ru.otus.hw.dto.ResultReport;
 
 import java.util.List;
 
 public interface ReportService {
-    List<ResultReportDto> getBestResults();
-    List<ResultReportDto> getMiddleScoreResults();
+    List<ResultReport> getBestResults();
+    List<ResultReport> getMiddleScoreResults();
 }
