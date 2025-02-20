@@ -9,7 +9,6 @@ import ru.otus.hw.mappers.RankMapper;
 import ru.otus.hw.repositories.RankRepository;
 
 import java.util.List;
-import java.util.Set;
 
 @RequiredArgsConstructor
 @Service

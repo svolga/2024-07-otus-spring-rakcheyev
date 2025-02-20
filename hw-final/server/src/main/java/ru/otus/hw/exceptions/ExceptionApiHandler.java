@@ -19,7 +19,6 @@ import ru.otus.hw.utils.formatter.HttpStatusFormatter;
 
 import java.time.LocalDateTime;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @RestControllerAdvice
 @Slf4j
@@ -85,7 +84,7 @@ public class ExceptionApiHandler {
                         violation.getPropertyPath().toString(),
                         violation.getMessage(),
                         violation.getInvalidValue()))
-                .collect(Collectors.toList())
+                .toList()
                 .get(0)
                 .toString();
     }

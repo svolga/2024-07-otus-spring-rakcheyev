@@ -7,7 +7,7 @@ public enum RoleKey {
 
     public final String label;
 
-    private RoleKey(String label) {
+    RoleKey(String label) {
         this.label = label;
     }
 }

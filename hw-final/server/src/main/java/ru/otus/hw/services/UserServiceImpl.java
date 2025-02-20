@@ -1,7 +1,6 @@
 package ru.otus.hw.services;
 
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw.dto.UserDto;
@@ -54,9 +53,9 @@ public class UserServiceImpl implements UserService {
     public List<UserInfoDto> findAll() {
         var users = userRepository.findAll();
 
-        for (User user : users) {
+/*        for (User user : users) {
             user.getRoles().size();
-        }
+        }*/
 
         return userMapper.toUserInfoDtos(users);
     }
