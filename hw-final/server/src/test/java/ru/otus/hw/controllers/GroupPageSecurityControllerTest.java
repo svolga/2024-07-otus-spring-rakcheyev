@@ -9,9 +9,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.otus.hw.pages.GroupPageController;
 import ru.otus.hw.repositories.GroupRepository;
 import ru.otus.hw.repositories.UserRepository;
@@ -19,14 +16,7 @@ import ru.otus.hw.security.CustomUserDetailService;
 import ru.otus.hw.security.SecurityConfiguration;
 import ru.otus.hw.services.GroupService;
 
-import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Stream;
-
-import static java.util.Objects.nonNull;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DisplayName("Контроллер GroupPage security должен ")
 @Import(SecurityConfiguration.class)

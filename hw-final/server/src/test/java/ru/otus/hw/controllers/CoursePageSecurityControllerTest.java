@@ -18,8 +18,6 @@ import ru.otus.hw.services.CourseService;
 
 import java.util.stream.Stream;
 
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-
 @DisplayName("Контроллер CoursePage security должен ")
 @Import(SecurityConfiguration.class)
 @WebMvcTest(controllers = CoursePageController.class)

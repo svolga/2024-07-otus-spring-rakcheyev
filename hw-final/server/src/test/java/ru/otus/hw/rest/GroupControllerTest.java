@@ -46,18 +46,11 @@ class GroupControllerTest {
     private static final long FIRST_GROUP_ID = 1L;
     private static final String FIRST_GROUP_TITLE = "GroupTitle_1";
     private static final String FIRST_GROUP_INFO = "GroupDesc_1";
-    private static final int FIRST_GROUP_PRICE = 120_000;
 
     private static final long FIRST_COURSE_ID = 1L;
     private static final String FIRST_COURSE_TITLE = "CourseTitle_1";
     private static final String FIRST_COURSE_INFO = "CourseDesc_1";
     private static final int FIRST_COURSE_PRICE = 120_000;
-
-    private static final String GROUP_TITLE_CREATED = "GroupTitle_Created";
-    private static final String GROUP_TITLE_UPDATED = "GroupTitle_Updated";
-
-    private static final long SECOND_GROUP_ID = 2L;
-    private static final String SECOND_GROUP_NAME = "Group_2";
 
     private static final String UPDATED_GROUP_NAME = "Updated Group";
 
@@ -170,17 +163,6 @@ class GroupControllerTest {
     private static GroupDto getFirstGroup() {
         return GroupDto.builder()
                 .id(FIRST_GROUP_ID)
-                .name(FIRST_GROUP_TITLE)
-                .info(FIRST_GROUP_INFO)
-                .startAt(LocalDate.of(2025,1, 1))
-                .endAt(LocalDate.of(2025,7, 1))
-                .courseDto(getFirstCourse())
-                .build();
-    }
-
-    private static GroupDto getNewGroupData() {
-        return GroupDto.builder()
-                .id(0L)
                 .name(FIRST_GROUP_TITLE)
                 .info(FIRST_GROUP_INFO)
                 .startAt(LocalDate.of(2025,1, 1))

@@ -45,17 +45,12 @@ class CourseControllerTest {
     private static final String FIRST_COURSE_INFO = "CourseDesc_1";
     private static final int FIRST_COURSE_PRICE = 120_000;
 
-    private static final long SECOND_COURSE_ID = 2L;
-    private static final String SECOND_COURSE_NAME = "Course_2";
-
     private static final String UPDATED_COURSE_NAME = "Updated Course";
 
     @Test
     @DisplayName("возвращать список курсов")
     void shouldReturnCorrectCourseList() throws Exception {
-        var courseDtos = List.of(
-                getFirstCourse()
-        );
+        var courseDtos = List.of(getFirstCourse());
 
         when(courseService.findAll()).thenReturn(courseDtos);
 
