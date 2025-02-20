@@ -12,6 +12,7 @@ import jakarta.persistence.NamedAttributeNode;
 import jakarta.persistence.NamedEntityGraph;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Entity
 @EqualsAndHashCode
+@Builder
 @ToString
 @Table(name = "groups")
 @NamedEntityGraph(name = "group-course-entity-graph",
