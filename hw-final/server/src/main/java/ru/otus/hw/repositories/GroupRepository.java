@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.Set;
 
 public interface GroupRepository extends JpaRepository<Group, Long> {
+    @EntityGraph("group-course-entity-graph")
     List<Group> findAllByIdIn(Set<Long> ids);
 
     @Override

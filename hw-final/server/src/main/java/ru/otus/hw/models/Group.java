@@ -26,7 +26,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"course"})
 @Builder
 @ToString
 @Table(name = "groups")

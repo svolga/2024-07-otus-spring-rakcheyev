@@ -31,15 +31,15 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"taskMaterials", "group", "teacher"})
 @Entity
 @Builder
 @Table(name = "tasks")
 @NamedEntityGraph(name = "task-teacher-group-materials-entity-graph",
         attributeNodes = {
-            @NamedAttributeNode("teacher"),
-            @NamedAttributeNode("group"),
-            @NamedAttributeNode("taskMaterials")
+                @NamedAttributeNode("teacher"),
+                @NamedAttributeNode("group"),
+                @NamedAttributeNode("taskMaterials")
         })
 public class Task {
     @Id

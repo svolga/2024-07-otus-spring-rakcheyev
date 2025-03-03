@@ -32,6 +32,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<CourseDto> findAllByIds(Set<Long> ids) {
         var courses = courseRepository.findAllByIdIn(ids);
         return courseMapper.toDtos(courses);
@@ -61,8 +62,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     private void validate(long id) {
-        var course = findById(id);
-        if (course == null) {
+        if (!courseRepository.existsById(id)) {
             throw new EntityNotFoundException("Course with id %d not found".formatted(id));
         }
     }

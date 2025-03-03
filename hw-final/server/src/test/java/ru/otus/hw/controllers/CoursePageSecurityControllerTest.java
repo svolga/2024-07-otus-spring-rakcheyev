@@ -30,7 +30,7 @@ class CoursePageSecurityControllerTest extends BasePageSecurityControllerTest {
     private CourseRepository courseRepository;
 
     @MockBean
-    CustomUserDetailService customUserDetailService;
+    private CustomUserDetailService customUserDetailService;
 
     @MockBean
     private UserRepository userRepository;

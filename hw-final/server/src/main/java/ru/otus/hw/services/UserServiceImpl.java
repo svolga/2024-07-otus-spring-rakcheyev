@@ -52,11 +52,6 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public List<UserInfoDto> findAll() {
         var users = userRepository.findAll();
-
-/*        for (User user : users) {
-            user.getRoles().size();
-        }*/
-
         return userMapper.toUserInfoDtos(users);
     }
 
@@ -111,8 +106,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void validate(long id) {
-        var user = findById(id);
-        if (user == null) {
+        if (!userRepository.existsById(id)) {
             throw new EntityNotFoundException("User with id %d not found".formatted(id));
         }
     }

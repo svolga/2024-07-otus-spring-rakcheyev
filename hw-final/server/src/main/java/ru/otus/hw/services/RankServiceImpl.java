@@ -54,8 +54,7 @@ public class RankServiceImpl implements RankService {
     }
 
     private void validate(long id) {
-        var rank = findById(id);
-        if (rank == null) {
+        if (!rankRepository.existsById(id)) {
             throw new EntityNotFoundException("Rank with id %d not found".formatted(id));
         }
     }

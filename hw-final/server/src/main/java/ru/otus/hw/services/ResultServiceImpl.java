@@ -75,8 +75,7 @@ public class ResultServiceImpl implements ResultService {
     }
 
     private void validate(long id) {
-        var result = findById(id);
-        if (result == null) {
+        if (!resultRepository.existsById(id)) {
             throw new EntityNotFoundException("Result with id %d not found".formatted(id));
         }
     }

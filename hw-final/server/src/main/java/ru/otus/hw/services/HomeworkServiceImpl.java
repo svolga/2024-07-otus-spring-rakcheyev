@@ -8,6 +8,7 @@ import ru.otus.hw.dto.HomeworkInfoDto;
 import ru.otus.hw.exceptions.EntityNotFoundException;
 import ru.otus.hw.mappers.HomeworkMapper;
 import ru.otus.hw.models.Task;
+import ru.otus.hw.repositories.GroupRepository;
 import ru.otus.hw.repositories.HomeworkRepository;
 import ru.otus.hw.repositories.TaskRepository;
 
@@ -20,6 +21,7 @@ public class HomeworkServiceImpl implements HomeworkService {
     private final HomeworkRepository homeworkRepository;
 
     private final HomeworkMapper homeworkMapper;
+    private final GroupRepository groupRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -60,8 +62,7 @@ public class HomeworkServiceImpl implements HomeworkService {
     }
 
     private void validate(long id) {
-        var group = findById(id);
-        if (group == null) {
+        if (!groupRepository.existsById(id)) {
             throw new EntityNotFoundException("Homework with id %d not found".formatted(id));
         }
     }

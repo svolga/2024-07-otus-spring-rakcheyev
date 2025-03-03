@@ -30,7 +30,7 @@ class GroupPageSecurityControllerTest extends BasePageSecurityControllerTest {
     private GroupRepository groupRepository;
 
     @MockBean
-    CustomUserDetailService customUserDetailService;
+    private CustomUserDetailService customUserDetailService;
 
     @MockBean
     private UserRepository userRepository;

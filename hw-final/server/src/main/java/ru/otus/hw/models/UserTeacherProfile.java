@@ -19,7 +19,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"user"})
 @ToString
 @Table(name = "teachers_profiles")
 public class UserTeacherProfile {

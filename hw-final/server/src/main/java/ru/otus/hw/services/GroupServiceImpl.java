@@ -65,8 +65,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     private void validate(long id) {
-        var group = findById(id);
-        if (group == null) {
+        if (!groupRepository.existsById(id)) {
             throw new EntityNotFoundException("Group with id %d not found".formatted(id));
         }
     }

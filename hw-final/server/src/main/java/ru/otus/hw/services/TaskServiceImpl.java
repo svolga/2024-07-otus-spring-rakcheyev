@@ -65,8 +65,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     private void validate(long id) {
-        var task = findById(id);
-        if (task == null) {
+        if (!taskRepository.existsById(id)) {
             throw new EntityNotFoundException("Task with id %d not found".formatted(id));
         }
     }
