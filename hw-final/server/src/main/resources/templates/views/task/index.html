@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{views/fragment/head :: setHeader('Занятия')}"></head>
+
+<body onload="showTasks()">
+
+<span th:replace="~{views/fragment/topmenu}"></span>
+
+<span th:replace="~{views/fragment/material_modal}"></span>
+
+<!--- start -->
+<div class="container-fluid">
+    <div class="row">
+
+        <nav th:replace="~{views/fragment/leftmenu}"></nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4"><div class="chartjs-size-monitor" style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+
+                <h1 class="h2">Список занятий</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <div class="btn-group mr-2">
+                        <a class="btn btn-outline-secondary" th:href="@{/task/create}" href="task/view/edit.html">Создать</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+
+                <table class="table table-striped table-sm">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Название</th>
+                        <th>Описание</th>
+                        <th>Начало занятия</th>
+                        <th>Преподаватель</th>
+                        <th>Курс</th>
+                        <th>Группа</th>
+                        <th colspan="2">Действие</th>
+                    </tr>
+                    </thead>
+                    <tbody id="table-items">
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- end -->
+
+<footer th:insert="~{views/fragment/footer}"></footer>
+
+</body>
+</html>

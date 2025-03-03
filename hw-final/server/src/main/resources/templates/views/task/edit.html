@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{views/fragment/head :: setHeader('Занятие')}"></head>
+
+<body onload="loadTask()">
+
+<span th:replace="~{views/fragment/topmenu}"></span>
+
+
+
+<!--- start -->
+<div class="container-fluid">
+    <div class="row">
+
+        <nav th:replace="~{views/fragment/leftmenu}"></nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4"><div class="chartjs-size-monitor" style="position: absolute; inset: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
+            <div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Занятие</h1>
+            </div>
+
+            <div class="table-responsive">
+
+                <form id="edit-form" action="views/task/edit.html" th:method="post">
+                    <div class="form-group">
+                        <label for="id-input">ID:</label>
+                        <input id="id-input" class="form-control" type="text" readonly="readonly" name="id" th:value="*{id}" value="1"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="name-input">Название:</label>
+                        <input id="name-input"
+                               class="form-control"
+                               name="name"
+                               type="text"
+                               placeholder="Название занятия"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="info-input">Описание</label>
+                        <textarea id="info-input"  class="form-control" name="info" rows="6" placeholder="Описание"></textarea>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="name-input">Дата начала:</label>
+                        <input id="start-input"
+                               class="form-control"
+                               name="start"
+                               type="text"
+                               placeholder="Дата начала"/>
+                        <small class="text-muted">Формат: YYYY-MM-DDThh:mm:ss</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="groupId">Группа:</label>
+                        <select id="groupId" name="groupId" class="form-control">
+                            <option th:value="0" th:disabled="disabled" label="-- Выберите группу --" th:selected="selected"></option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="teacherId">Преподаватель:</label>
+                        <select id="teacherId" name="teacherId" class="form-control">
+                            <option th:value="0" th:disabled="disabled" label="-- Выберите преподавателя --" th:selected="selected"></option>
+                        </select>
+                    </div>
+
+                    <div class="errors" id="errorId"></div>
+
+                    <button type="button" class="btn btn-primary"  onclick="saveTask()">Сохранить</button>
+                    <a class="btn btn-secondary" href="views/task/index.html" th:href="@{/task}">
+                        Отменить
+                    </a>
+                </form>
+
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- end -->
+
+<footer th:insert="~{views/fragment/footer}"></footer>
+
+</body>
+</html>

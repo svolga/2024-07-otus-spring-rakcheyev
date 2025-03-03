@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{views/fragment/head :: setHeader('Пользователи')}"></head>
+
+<body onload="loadTeacher()">
+
+<span th:replace="~{views/fragment/topmenu}"></span>
+
+<!--- start -->
+<div class="container-fluid">
+    <div class="row">
+
+        <nav th:replace="~{views/fragment/leftmenu}"></nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Пользователь</h1>
+            </div>
+
+            <div class="table-responsive">
+
+                <form id="edit-form" action="views/teacher/edit.html" th:method="post">
+                    <div class="form-group">
+                        <label for="id-input">ID:</label>
+                        <input id="id-input" class="form-control" type="text" readonly="readonly" name="id" th:value="*{id}" value="1"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username-input">Username:</label>
+                        <input id="username-input"
+                               class="form-control"
+                               name="username"
+                               type="text"
+                               placeholder="username"
+                               readonly = "readonly"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fullname-input">ФИО:</label>
+                        <input id="fullname-input"
+                               class="form-control"
+                               name="fullname"
+                               type="text"
+                               placeholder="ФИО"
+                               readonly = "readonly"
+                               />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone-input">Телефон:</label>
+                        <input id="phone-input"
+                               class="form-control"
+                               name="phone"
+                               type="text"
+                               placeholder="Телефон"
+                               readonly = "readonly"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email-input">E-Mail:</label>
+                        <input id="email-input"
+                               class="form-control"
+                               name="email"
+                               type="text"
+                               placeholder="E-Mail"
+                               readonly = "readonly"
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="info-input">Специализация</label>
+                        <textarea id="info-input"  class="form-control" name="info" rows="5"></textarea>
+                    </div>
+
+                    <div class="errors" id="errorId"></div>
+
+                    <button type="button" class="btn btn-primary"  onclick="saveTeacher()">Сохранить</button>
+                    <a class="btn btn-secondary" href="views/teacher/index.html" th:href="@{/teacher}">
+                        Отменить
+                    </a>
+                </form>
+
+            </div>
+        </main>
+    </div>
+</div>
+<!-- end -->
+
+<footer th:insert="~{views/fragment/footer}"></footer>
+
+</body>
+</html>

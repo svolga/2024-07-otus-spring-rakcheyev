@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+</head>
+<body>
+
+<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+    <div class="sidebar-sticky">
+
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <span>Навигация</span>
+        </h6>
+        <ul class="nav flex-column">
+
+            <li class="nav-item">
+                <a class="nav-item nav-link" th:href="@{/user}" href="views/user/index.html">
+                    <i class="bi bi-people"></i>
+                    Пользователи <span class="sr-only"></span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-item nav-link" th:href="@{/teacher}" href="views/teacher/index.html">
+                    <i class="bi bi-person-plus"></i>
+                    Преподаватели
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-item nav-link" th:href="@{/student}" href="views/student/index.html">
+                    <i class="bi bi-person-gear"></i>
+                    Студенты
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-item nav-link" th:href="@{/course}" href="views/course/index.html">
+                    <i class="bi bi-layout-wtf"></i>
+                    Курсы
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-item nav-link" th:href="@{/group}" href="views/group/index.html">
+                    <i class="bi bi-share"></i>
+                    Группы
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-item nav-link" th:href="@{/task}" href="views/task/index.html">
+                    <i class="bi bi-boxes"></i>
+                    Занятия
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-item nav-link" th:href="@{/homework}" href="views/homework/index.html">
+                    <i class="bi bi-puzzle"></i>
+                    Список ДЗ
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-item nav-link" th:href="@{/result}" href="views/result/index.html">
+                    <i class="bi bi-bookmark-check"></i>
+                    Ведомость ДЗ
+                </a>
+            </li>
+
+        </ul>
+
+
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <span>Справочники</span>
+        </h6>
+        <ul class="nav flex-column mb-2">
+
+            <li class="nav-item">
+                <a class="nav-item nav-link" th:href="@{/rank}" href="views/status/index.html">
+                    <i class="bi bi-check-all"></i>
+                    Статусы ДЗ
+                </a>
+            </li>
+
+
+        </ul>
+
+
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <span>Отчеты</span>
+        </h6>
+        <ul class="nav flex-column mb-2">
+            <li class="nav-item">
+                <a class="nav-item nav-link" th:href="@{/report-best}" href="views/report/best.html">
+                    <i class="bi bi-file-text"></i>
+                    Статистика успеваемости
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-item nav-link" th:href="@{/report-middle}" href="views/report/middle.html">
+                    <i class="bi bi-file-text"></i>
+                    Средняя оценка
+                </a>
+            </li>
+        </ul>
+
+
+
+    </div>
+</nav>
+
+</body>
+</html>
