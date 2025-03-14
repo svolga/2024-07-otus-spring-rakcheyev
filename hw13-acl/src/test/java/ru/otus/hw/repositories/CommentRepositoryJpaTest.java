@@ -139,10 +139,10 @@ public class CommentRepositoryJpaTest {
     }
 
     private Book getBookById(long id) {
-        return bookRepository.findById(id).get();
+        return bookRepository.findById(id).orElseThrow();
     }
 
     private Comment getCommentById(long id) {
-        return commentRepository.findById(id).get();
+        return commentRepository.findById(id).orElseThrow();
     }
 }
