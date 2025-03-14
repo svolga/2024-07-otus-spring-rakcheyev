@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${genre.id == 0} ? 'Создать жанр' : 'Изменить жанр'" > Жанр</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
+    <link th:href="@{/css/bootstrap.min.css}"  type="text/css" rel="stylesheet"/>
+</head>
+<body>
+
+
+<!-- Genre edition -->
+<form id="edit-form" action="views/genre/edit.html" th:method="post" th:object="${genre}"
+      th:action="*{id == 0} ? @{/genre/create} : @{/genre/edit}"
+    >
+    <h3 th:text="${genre.id == 0} ? 'Создать жанр' : 'Изменить жанр'">Genre Info:</h3>
+
+    <div class="row">
+        <label for="id-input">ID:</label>
+        <input id="id-input" type="text" readonly="readonly" name="id" th:value="*{id}" value="1"/>
+    </div>
+
+    <div class="row">
+        <label for="genre-name-input">Название:</label>
+        <input id="genre-name-input" name="name" type="text" th:value="*{name}" value="John Doe"/>
+        <div class="errors" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Wrong genre name error</div>
+    </div>
+
+    <div class="row">
+        <div>
+            <button class="btn btn-primary" type="submit">Сохранить</button>
+            <a href="/views/genre/index.html"  th:href="@{/genre}"><button type="button" class="btn btn-secondary">Отменить</button></a>
+        </div>
+    </div>
+</form>
+
+</body>
+</html>

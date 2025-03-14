@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Список авторов</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet" />
+    <link th:href="@{/css/bootstrap.min.css}"  type="text/css" rel="stylesheet"/>
+</head>
+<body>
+
+<div class="navigation">
+    <a th:href="@{/}" href="index.html">Главная</a> |
+    <a th:href="@{/author/create}" href="author/create.html">Создать автора</a> |
+    <span th:if="${#authentication == null}"><a th:href="@{/logout}">Выйти</a></span>
+</div>
+
+<h3>Авторы</h3>
+
+<table class="items">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Название</th>
+        <th colspan="2">Действие</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="author : ${authors}" th:object="${author}">
+        <td th:text="*{id}">1</td>
+        <td th:text="*{fullName}">John Doe</td>
+        <td>
+            <a th:href="@{/author/edit(id=*{id})}" href="author/edit.html">Изменить</a>
+        </td>
+        <td>
+            <form class="delete-form" action="views/author/index.html" th:method="post"
+                  th:action="@{/author/delete}">
+                <input name="id" type="hidden" th:value="*{id}" value="Delete"/>
+                <button type="submit" class="link"><span>Удалить</span></button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
